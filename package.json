@@ -14,20 +14,23 @@
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive -R spec"
   },
   "dependencies": {
+    "apollo-boost": "^0.3.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "dotenv": "4.0.0",
-    "expect": "22.1.0",
+    "expect": "^24.1.0",
     "express": "^4.16.4",
     "express-session": "1.15.6",
+    "graphql": "^14.1.1",
+    "httpie": "^1.1.0",
     "istanbul": "0.4.5",
     "jsonwebtoken": "8.2.1",
     "mocha": "5.0.0",
     "moment": "2.22.2",
     "mysql2": "1.5.3",
-    "twig": "^1.10.4",
     "path": "^0.12.7",
     "sequelize": "4.31.2",
+    "twig": "^1.10.4",
     "winston": "2.4.0"
   },
   "devDependencies": {

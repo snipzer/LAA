@@ -5,6 +5,7 @@ class BaseDao {
         this.model = model;
         this.logger = logger;
         this.op = Sequelize.Op;
+        this.logger.info(`Instanciating ${this.constructor.name}...`);
     }
 
     findAll() {

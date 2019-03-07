@@ -16,10 +16,10 @@ class ModelFactory extends BaseFactory {
                 ModelFactory._syncModels(models).then(() => {
                     logger.info('Biding relation...');
                     ModelFactory._bindRelation(models, logger).then(() => {
-                        logger.info('Last synchronisation...');
-                        ModelFactory._syncModels(models).then(() => {
-                            resolve();
-                        }).catch(err => reject(err));
+                        // logger.info('Last synchronisation...');
+                        // ModelFactory._syncModels(models).then(() => {
+                        resolve();
+                        // }).catch(err => reject(err));
                     }).catch(err => reject(err));
                 }).catch(err => reject(err));
             }).catch(err => reject(err));
