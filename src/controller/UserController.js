@@ -6,12 +6,19 @@ class UserController extends BaseController {
         this.router.route(`${routePreffix}`).get(AccessGranted.public, this.findUsers.bind(this));
         this.router.route(`${routePreffix}/:userId`).get(AccessGranted.public, this.getUser.bind(this));
         this.router.route(`${routePreffix}`).post(AccessGranted.public, this.createUser.bind(this));
+        this.router.route(`${routePreffix}/update`).post(AccessGranted.public, this.updateUser.bind(this));
         this.router.route(`${routePreffix}/:userId`).delete(AccessGranted.public, this.deleteUser.bind(this));
+    }
+
+    updateUser(req, res) {
+        this.service.updateUser(req.body)
+            .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
     }
 
     createUser(req, res) {
         this.service.createUser(req.body)
-            .then(user => this.statusHandler.sendJson(res, this.statusHandler.ok, user))
+            .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
             .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
     }
 

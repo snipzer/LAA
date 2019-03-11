@@ -8,6 +8,15 @@ class UserService extends BaseService {
         this.dao = daos.user;
     }
 
+    // TODO Ne pas update le mot de passe utilisateur
+    updateUser(user) {
+        return new Promise((resolve, reject) => {
+            this.dao.update(user)
+                .then(result => resolve(result))
+                .catch(err => reject(err));
+        });
+    }
+
     createUser(user) {
         return new Promise((resolve, reject) => {
             BcryptUtil.generatePassword(user.password).then((hash) => {
