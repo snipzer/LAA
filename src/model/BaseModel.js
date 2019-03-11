@@ -1,16 +1,17 @@
+const { instances } = require('gstore-node');
 
 class BaseModel {
-    constructor(sequelize, logger, modelName) {
-        this.sequelize = sequelize;
+    constructor(logger, modelName) {
+        this.connexion = instances.get('default');
         this.modelName = modelName;
         this.logger = logger;
-        this.model = null;
+        this.Model = null;
         this.logger.info(`Instanciating ${this.modelName}Model...`);
         this.createModel();
     }
 
     getModel() {
-        return this.model;
+        return this.Model;
     }
 
     createModel() {}

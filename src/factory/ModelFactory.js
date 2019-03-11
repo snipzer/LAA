@@ -1,6 +1,6 @@
 const BaseFactory = require('./BaseFactory');
 const UserModel = require('../model/UserModel');
-
+const { instances } = require('gstore-node');
 /**
  * Here we instantiate the models
  * _init instantiate the models
@@ -8,53 +8,21 @@ const UserModel = require('../model/UserModel');
  * _syncModels create the tables
  */
 class ModelFactory extends BaseFactory {
-    static initModels(sequelizeConnection, models, logger) {
+    static initModels(models, logger) {
         return new Promise((resolve, reject) => {
-            logger.info('Instanciating models...');
-            ModelFactory._init(models, sequelizeConnection, logger).then(() => {
-                logger.info('First synchronisation...');
-                ModelFactory._syncModels(models).then(() => {
-                    logger.info('Biding relation...');
-                    ModelFactory._bindRelation(models, logger).then(() => {
-                        // logger.info('Last synchronisation...');
-                        // ModelFactory._syncModels(models).then(() => {
-                        resolve();
-                        // }).catch(err => reject(err));
-                    }).catch(err => reject(err));
-                }).catch(err => reject(err));
-            }).catch(err => reject(err));
+            ModelFactory._init(models, logger).then(() => resolve()).catch(err => reject(err));
         });
     }
 
-    static _init(models, sequelizeConnection, logger) {
+    static _init(models, logger) {
         return new Promise((resolve, reject) => {
             try {
-                models.user = new UserModel(sequelizeConnection, logger, 'user').getModel();
+                const gstore = instances.get('default');
+                models.user = gstore.model('User', new UserModel(logger, 'user').getModel());
                 resolve();
             } catch (err) {
                 reject(err);
             }
-        });
-    }
-
-    static _bindRelation(models, logger) {
-        return new Promise((resolve, reject) => {
-            try {
-                logger.info('No relation to bind yet');
-                resolve();
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    static _syncModels(models) {
-        return new Promise((resolve, reject) => {
-            const promises = [];
-            promises.push(models.user.sync());
-            Promise.all(promises).then(() => {
-                resolve();
-            }).catch(err => reject(err));
         });
     }
 }
