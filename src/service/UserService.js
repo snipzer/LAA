@@ -8,9 +8,9 @@ class UserService extends BaseService {
         this.dao = daos.user;
     }
 
-    // TODO Ne pas update le mot de passe utilisateur
     updateUser(user) {
         return new Promise((resolve, reject) => {
+            user.password = undefined;
             this.dao.update(user)
                 .then(result => resolve(result))
                 .catch(err => reject(err));
