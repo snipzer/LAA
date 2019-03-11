@@ -15,7 +15,7 @@ class BaseDao {
 
     getById(objectId) {
         this.logger.verbose(`${this.constructor.name} - ${this.getById.name}`);
-        return this.Model.get({ objectId });
+        return this.Model.get(objectId);
     }
 
     findByObject(object) {
