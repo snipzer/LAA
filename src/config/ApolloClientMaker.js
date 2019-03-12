@@ -7,7 +7,7 @@ class ApolloClientMaker {
             try {
                 logger.info('Creating apollo client for gitHub...');
                 const client = new ApolloClient({
-                    uri: `https://api.github.com/graphql?access_token=${process.env.GITHUB_OAUTH}`,
+                    uri: ApolloClientMaker.getUriWithToken(process.env.GITHUB_OAUTH),
                     fetch: async (uri, options) => {
                         const { method } = options;
                         options.family = 4;
@@ -27,6 +27,10 @@ class ApolloClientMaker {
                 reject(err);
             }
         });
+    }
+
+    static getUriWithToken(token) {
+        return `https://api.github.com/graphql?access_token=${token}`;
     }
 }
 
