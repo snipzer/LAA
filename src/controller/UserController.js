@@ -4,6 +4,7 @@ const AccessGranted = require('../middleware/AccessGranted');
 class UserController extends BaseController {
     registerRoutes(routePreffix) {
         this.router.route('/login').post(AccessGranted.public, this.login.bind(this));
+        this.router.route('/logout').post(AccessGranted.public, this.logout.bind(this));
         this.router.route(`${routePreffix}`).get(AccessGranted.public, this.findUsers.bind(this));
         this.router.route(`${routePreffix}/:userId`).get(AccessGranted.public, this.getUser.bind(this));
         this.router.route(`${routePreffix}`).post(AccessGranted.public, this.createUser.bind(this));
@@ -19,6 +20,12 @@ class UserController extends BaseController {
                     this.statusHandler.sendJson(res, this.statusHandler.ok, userAndToken);
                 }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.unauthorized, err.message));
             }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+    }
+
+    logout(req, res) {
+        this.service.logout(req)
+            .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
     }
 
     updateUser(req, res) {

@@ -1,6 +1,6 @@
 const BaseService = require('./BaseService');
 const BcryptUtil = require('../util/BcryptUtil');
-const ErrorUtil = require('../util/ErrorUtil');
+const MessageUtil = require('../util/MessageUtil');
 const AccessGranted = require('../middleware/AccessGranted');
 
 class UserService extends BaseService {
@@ -19,7 +19,7 @@ class UserService extends BaseService {
                         this.githubService.updateClientUrl(result.entityData.github_token);
                         resolve({ user: result.entityData, token: generatedToken });
                     } else {
-                        reject(new Error(ErrorUtil.getMessages().INVALID_CREDENTIAL));
+                        reject(new Error(MessageUtil.getErrors().INVALID_CREDENTIAL.fr));
                     }
                     resolve(res === true);
                 }).catch(err => reject(err));
@@ -32,6 +32,7 @@ class UserService extends BaseService {
             try {
                 request.session.user = undefined;
                 this.githubService.updateClientUrl(process.env.GITHUB_TOKEN);
+                resolve(MessageUtil.getInfos().DECONNECTED.fr);
             } catch (err) {
                 reject(err);
             }
