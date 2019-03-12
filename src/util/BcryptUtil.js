@@ -1,12 +1,13 @@
 const bcrypt = require('bcrypt-nodejs');
 const BaseUtil = require('./BaseUtil');
+const ObjectUtil = require('./ObjectUtil');
 
 class BcryptUtil extends BaseUtil {
     static validPassword(hash, password) {
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, hash, (err, result) => {
                 if (err) reject(err);
-                resolve(result);
+                resolve(result === true);
             });
         });
     }

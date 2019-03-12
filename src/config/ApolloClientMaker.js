@@ -1,13 +1,14 @@
 const httpie = require('httpie');
 const { default: ApolloClient } = require('apollo-boost');
 
+// TODO Changer le static !!
 class ApolloClientMaker {
     static getClient(logger) {
         return new Promise((resolve, reject) => {
             try {
                 logger.info('Creating apollo client for gitHub...');
                 const client = new ApolloClient({
-                    uri: ApolloClientMaker.getUriWithToken(process.env.GITHUB_OAUTH),
+                    uri: ApolloClientMaker.getUriWithToken(process.env.GITHUB_TOKEN),
                     fetch: async (uri, options) => {
                         const { method } = options;
                         options.family = 4;
