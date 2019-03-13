@@ -11,6 +11,12 @@ class ViewUtil extends BaseUtil {
                     test: 'toto',
                 }
             },
+            LOGIN: {
+                name: 'login',
+                properties: {
+                    title: 'login'
+                }
+            }
         };
     }
 }

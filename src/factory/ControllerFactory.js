@@ -11,7 +11,7 @@ class ControllerUtil extends BaseFactory {
         return new Promise((resolve, reject) => {
             try {
                 app.use('/', router);
-                const viewController = new ViewController(router, null, logger, statusHandler, '');
+                const viewController = new ViewController(router, services, logger, statusHandler, '');
                 const userController = new UserController(router, services.user, logger, statusHandler, '/api/user');
                 resolve();
             } catch (err) {
