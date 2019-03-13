@@ -8,7 +8,7 @@ class ViewUtil extends BaseUtil {
                 name: 'index',
                 properties: {
                     title: 'Home',
-                    test: 50,
+                    test: 'toto',
                 }
             },
         };
