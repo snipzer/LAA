@@ -18,6 +18,14 @@ class GithubService extends BaseService {
                 .catch(err => reject(err));
         });
     }
+
+    getRateLimit() {
+        return new Promise((resolve, reject) => {
+            this.dao.getRateLimit()
+                .then(result => resolve(result))
+                .catch(err => reject(err));
+        });
+    }
 }
 
 module.exports = GithubService;

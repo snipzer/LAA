@@ -22,6 +22,21 @@ class GithubDao {
             }`
         });
     }
+
+    getRateLimit() {
+        return this.client.query({
+            query: this.gql`
+            {
+                rateLimit {
+                    limit
+                    cost
+                    resetAt
+                    remaining
+                    nodeCount
+                }
+            }`
+        });
+    }
 }
 
 module.exports = GithubDao;
