@@ -1,5 +1,6 @@
 const BaseFactory = require('./BaseFactory');
 const ApolloClientMaker = require('../config/ApolloClientMaker');
+const { gql } = require('apollo-boost');
 const UserDao = require('../dao/UserDao');
 const GithubDao = require('../dao/GithubDao');
 
@@ -12,7 +13,7 @@ class DaoFactory extends BaseFactory {
             try {
                 daos.user = new UserDao(logger, models.user);
                 ApolloClientMaker.getClient(logger).then((apolloClient) => {
-                    daos.github = new GithubDao(logger, apolloClient);
+                    daos.github = new GithubDao(logger, apolloClient, gql);
                     resolve();
                 }).catch(err => reject(err));
             } catch (err) {
