@@ -6,18 +6,15 @@ class GithubDao {
         this.logger.info(`Instanciating ${this.constructor.name}...`);
     }
 
-    testQuery() {
+    getUserInformation() {
         return this.client.query({
             query: this.gql`
             {
-                viewer:user(login:"Jlandure")  {
+                user(login: "SnipzEr")  {
+                    id
                     login
                     name
-                    location
                     company
-                    commitComments{
-                        totalCount
-                    }
                 }
             }`
         });
@@ -35,6 +32,51 @@ class GithubDao {
                     nodeCount
                 }
             }`
+        });
+    }
+
+    getOrganizationUsers() {
+        return this.client.query({
+            query: this.gql`
+{
+  viewer: organization(login: "Zenika") {
+    login
+    name
+    location
+    membersWithRole(first: 100) {
+      edges {
+        node {
+          login
+          repositories(first: 40, privacy: PUBLIC, orderBy: {field: STARGAZERS, direction: DESC}, isFork: false) {
+            edges {
+              node {
+                owner {
+                  login
+                }
+                name
+                primaryLanguage {
+                  name
+                }
+                stargazers {
+                  totalCount
+                }
+                pullRequests(first: 50) {
+                  edges {
+                    node {
+                      author {
+                        login
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`
         });
     }
 }

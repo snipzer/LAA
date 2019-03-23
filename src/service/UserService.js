@@ -2,6 +2,7 @@ const BaseService = require('./BaseService');
 const BcryptUtil = require('../util/BcryptUtil');
 const MessageUtil = require('../util/MessageUtil');
 const AccessGranted = require('../middleware/AccessGranted');
+const DatastoreUtil = require('../util/DatastoreUtil');
 
 class UserService extends BaseService {
     constructor(daos, services,logger) {
@@ -17,7 +18,7 @@ class UserService extends BaseService {
                     if (res === true) {
                         const generatedToken = AccessGranted.generateToken(result.entityData.id);
                         this.githubService.updateClientUrl(result.entityData.github_token);
-                        resolve({ user: result.entityData, token: generatedToken });
+                        resolve({ user: DatastoreUtil.getEntityInformation(result), token: generatedToken });
                     } else {
                         reject(new Error(MessageUtil.getErrors().INVALID_CREDENTIAL.fr));
                     }
@@ -43,7 +44,7 @@ class UserService extends BaseService {
         return new Promise((resolve, reject) => {
             user.password = undefined;
             this.dao.update(user)
-                .then(result => resolve(result.entityData))
+                .then(result => resolve(DatastoreUtil.getEntityInformation(result)))
                 .catch(err => reject(err));
         });
     }
@@ -70,7 +71,7 @@ class UserService extends BaseService {
     getUser(userId) {
         return new Promise((resolve, reject) => {
             this.dao.getById(userId)
-                .then(result => resolve(result))
+                .then(result => resolve(DatastoreUtil.getEntityInformation(result)))
                 .catch(err => reject(err));
         });
     }

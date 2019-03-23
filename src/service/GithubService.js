@@ -11,9 +11,9 @@ class GithubService extends BaseService {
         this.dao.client.uri = ApolloClientMaker.getUriWithToken(userToken);
     }
 
-    testQuery() {
+    getUserInformation() {
         return new Promise((resolve, reject) => {
-            this.dao.testQuery()
+            this.dao.getUserInformation()
                 .then(result => resolve(result))
                 .catch(err => reject(err));
         });
@@ -24,6 +24,14 @@ class GithubService extends BaseService {
             this.dao.getRateLimit()
                 .then(result => resolve(result))
                 .catch(err => reject(err));
+        });
+    }
+
+    getOrganizationUsers() {
+        return new Promise((resolve, reject) => {
+            this.dao.getOrganizationUsers()
+                .then(response => resolve(response))
+                .catch(err => reject(err.graphQLErrors));
         });
     }
 }
