@@ -44,6 +44,9 @@ class GithubDao {
     name
     location
     membersWithRole(first: 100) {
+      pageInfo {
+      startCursor   
+      }
       edges {
         node {
           login

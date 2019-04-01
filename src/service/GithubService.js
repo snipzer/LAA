@@ -30,8 +30,11 @@ class GithubService extends BaseService {
     getOrganizationUsers() {
         return new Promise((resolve, reject) => {
             this.dao.getOrganizationUsers()
-                .then(response => resolve(response))
-                .catch(err => reject(err.graphQLErrors));
+                .then((response) => {
+                    console.log(response)
+                    console.log(response.data.viewer.membersWithRole)
+                    resolve(response);
+                }).catch(err => reject(err));
         });
     }
 }
