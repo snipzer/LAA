@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 const BaseFactory = require('./BaseFactory');
-const ViewController = require('../controller/ViewController');
 const UserController = require('../controller/UserController');
 const GithubController = require('../controller/GithubController');
 
@@ -12,7 +11,6 @@ class ControllerUtil extends BaseFactory {
         return new Promise((resolve, reject) => {
             try {
                 app.use('/', router);
-                const viewController = new ViewController(router, services, logger, statusHandler, '');
                 const userController = new UserController(router, services.user, logger, statusHandler, '/api/user');
                 const githubController = new GithubController(router, services.github, logger, statusHandler, '/api/github');
                 resolve();

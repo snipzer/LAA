@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
 const logger = require('./config/Logger');
 const StatusHandler = require('./middleware/StatusHandler');
 const DatastoreConnector = require('./config/DatastoreConnector');
@@ -9,6 +8,9 @@ const ModelFactory = require('./factory/ModelFactory');
 const DaoFactory = require('./factory/DaoFactory');
 const ServiceFactory = require('./factory/ServiceFactory');
 const ControllerFactory = require('./factory/ControllerFactory');
+const helmet = require('helmet');
+const cors = require('cors');
+
 
 class Server {
     constructor() {
@@ -21,7 +23,7 @@ class Server {
         this.setPort();
         this.setSession();
         this.setStatusCodeHandler();
-        this.setViewEngine();
+        this.setSecurity();
         this.app.disable('x-powered-by');
     }
 
@@ -100,12 +102,14 @@ class Server {
         }));
     }
 
-    setViewEngine() {
-        logger.info('Setting view engine...');
-        this.app.use(express.static(path.join(__dirname, '/../public')));
-        this.app.set('view engine', 'twig');
-        this.app.set('views', path.join(__dirname, '../src/views/'));
+    setSecurity() {
+        this.app.use(helmet());
+        this.app.use(cors({
+            origin: 'http://localhost:3001',
+            optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+        }));
     }
+
 }
 
 module.exports = Server;
