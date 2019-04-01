@@ -1,9 +1,1 @@
-node_modules
-coverage
-
-.env-recette
-.env-preprod
-.env
-
 .idea
-package-lock.json
