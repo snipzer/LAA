@@ -27,11 +27,14 @@ class GithubService extends BaseService {
         });
     }
 
-    getOrganizationUsers() {
+    getOrgUsersRepositories() {
         return new Promise((resolve, reject) => {
             this.dao.getOrganizationUsers()
                 .then((response) => {
                     const result = this._extractData(response);
+                    result.sort((a, b) => {
+                        return (a.stargazer < b.stargazer || a.users.length < b.users.length) ? 1 : -1;
+                    });
                     resolve(result);
                 }).catch(err => reject(err));
         });
@@ -46,13 +49,14 @@ class GithubService extends BaseService {
             for (let j = 0; j < repositories.length; j++) {
                 let reponame = repositories[j].node.name;
                 let stargazer = repositories[j].node.stargazers.totalCount;
-                this._getRepositoriesInformation(result, reponame, username, stargazer);
+                let url = repositories[j].node.url;
+                this._getRepositoriesInformation(result, reponame, username, stargazer, url);
             }
         }
         return result;
     }
 
-    _getRepositoriesInformation(result, reponame, username, stargazer) {
+    _getRepositoriesInformation(result, reponame, username, stargazer, url) {
         let isPresent = false;
         result.forEach(objet => {
             if (objet.reponame === reponame) {
@@ -65,9 +69,10 @@ class GithubService extends BaseService {
         if (!isPresent) {
             result.push({
                 reponame: reponame,
+                url: url,
                 stargazer: stargazer,
                 users: [username]
-            })
+            });
         }
     }
 

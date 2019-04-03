@@ -57,6 +57,7 @@ class GithubDao {
                   login
                 }
                 name
+                url
                 primaryLanguage {
                   name
                 }

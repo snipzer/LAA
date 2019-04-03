@@ -1,5 +1,6 @@
 <template>
     <div class="row" id="menu-top">
+        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
         <div class="col">
             <h1>GITHUB API FETCHER</h1>
         </div>

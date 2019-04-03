@@ -15,6 +15,9 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
  #body {
+     padding-top: 5%;
+     padding-bottom: 5%;
      height: 650px;
+     overflow-y: scroll;
  }
 </style>

@@ -5,7 +5,7 @@ class GithubController extends BaseController {
     registerRoutes(routePreffix) {
         this.router.route(`${routePreffix}`).get(AccessGranted.public, this.getUserInformation.bind(this));
         this.router.route(`${routePreffix}/rate`).get(AccessGranted.public, this.getRateLimit.bind(this));
-        this.router.route(`${routePreffix}/users`).get(AccessGranted.public, this.getOrganizationUsers.bind(this));
+        this.router.route(`${routePreffix}/repositories`).get(AccessGranted.public, this.getOrgUsersRepositories.bind(this));
     }
 
     getUserInformation(req, res) {
@@ -20,8 +20,8 @@ class GithubController extends BaseController {
             .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
     }
 
-    getOrganizationUsers(req, res) {
-        this.service.getOrganizationUsers()
+    getOrgUsersRepositories(req, res) {
+        this.service.getOrgUsersRepositories()
             .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
             .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
     }

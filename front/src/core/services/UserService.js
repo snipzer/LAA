@@ -2,14 +2,14 @@ import BaseService from './BaseService'
 
 export default class UserService extends BaseService {
     login (email, password) {
-      return this._http.post('http://localhost:3000/login', {
+      return this._http.post(`${this._baseUrl}/login`, {
           email: email,
           password: password
       })
     }
 
   register (email, password, githubLogin, githubOrganization, githubToken) {
-    return this._http.post("http://localhost:3000/api/user", {
+    return this._http.post(`${this._baseUrl}/api/user`, {
         email: email,
         password: password,
         github_login: githubLogin,

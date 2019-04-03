@@ -6,6 +6,7 @@ import VerificationFormUtil from './core/utils/VerificationFormUtil'
 import App from "./components/vues/App.vue";
 import routes from "./core/router/route.js";
 import VueRouter from "vue-router";
+import GithubService from "./core/services/GithubService";
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -21,7 +22,8 @@ Vue.config.productionTip = false;
 Vue.utils = {};
 Vue.utils.verificationForm = new VerificationFormUtil();
 Vue.services = {};
-Vue.services.user = new UserService(Vue.http);
+Vue.services.user = new UserService(Vue.http, 'http://localhost:3000');
+Vue.services.github = new GithubService(Vue.http, 'http://localhost:3000');
 
 new Vue({
   el: "#app",
