@@ -21,7 +21,8 @@ class GithubController extends BaseController {
     }
 
     getOrgUsersRepositories(req, res) {
-        this.service.getOrgUsersRepositories()
+        console.log(req.session);
+        this.service.getOrgUsersRepositories(req.session.user.github_organization)
             .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
             .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
     }

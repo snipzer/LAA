@@ -35,11 +35,11 @@ class GithubDao {
         });
     }
 
-    getOrganizationUsers() {
+    getOrganizationUsers(githubOrganization) {
         return this.client.query({
             query: this.gql`
 {
-  viewer: organization(login: "Zenika") {
+  viewer: organization(login: "${githubOrganization}") {
     login
     name
     location

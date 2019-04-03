@@ -15,8 +15,7 @@ class UserController extends BaseController {
     login(req, res) {
         this.service.login(req.body.email, req.body.password)
             .then((userAndToken) => {
-                req.session.user = userAndToken.user;
-                this.saveSession(req, userAndToken.user).then(() => {
+                this.saveSession(req, userAndToken.user.data).then(() => {
                     this.statusHandler.sendJson(res, this.statusHandler.ok, userAndToken);
                 }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.unauthorized, err.message));
             }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));

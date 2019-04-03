@@ -27,9 +27,9 @@ class GithubService extends BaseService {
         });
     }
 
-    getOrgUsersRepositories() {
+    getOrgUsersRepositories(githubOrganization) {
         return new Promise((resolve, reject) => {
-            this.dao.getOrganizationUsers()
+            this.dao.getOrganizationUsers(githubOrganization)
                 .then((response) => {
                     const result = this._extractData(response);
                     result.sort((a, b) => {
