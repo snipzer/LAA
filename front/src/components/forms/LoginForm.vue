@@ -40,15 +40,12 @@
         },
         methods: {
             submit() {
-                console.log("SUBMIT");
-                console.log(this.emailData.value);
-                console.log(this.passwordData.value);
                 Vue.services.user.login(this.emailData.value, this.passwordData.value).then(result => {
                     Vue.localStorage.set("userLogin", result.data.user.data.email);
                     Vue.localStorage.set("userOrganization", result.data.user.data.github_organization);
                     Vue.localStorage.set("userId", result.data.user.data.id);
                     Vue.localStorage.set("userToken", result.data.token);
-                    //this.$router.push("repository");
+                    // this.$router.push("repository");
                 }).catch(err => console.log(err));
             }
         }
