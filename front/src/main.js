@@ -12,6 +12,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueLocalStorage);
 
+// TODO Remplacer vue-resource par axios
 Vue.http.interceptors.push((request, next) => {
     request.credentials = true;
     next();
