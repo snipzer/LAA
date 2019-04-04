@@ -106,7 +106,8 @@ class Server {
         this.app.use(helmet());
         this.app.use(cors({
             origin: 'http://localhost:8080',
-            optionsSuccessStatus: 200
+            optionsSuccessStatus: 200,
+            credentials: true
         }));
     }
 

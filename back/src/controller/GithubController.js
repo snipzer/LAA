@@ -1,5 +1,6 @@
 const BaseController = require('./BaseController');
 const AccessGranted = require('../middleware/AccessGranted');
+const MessageUtil = require('../util/MessageUtil');
 
 class GithubController extends BaseController {
     registerRoutes(routePreffix) {
@@ -21,10 +22,13 @@ class GithubController extends BaseController {
     }
 
     getOrgUsersRepositories(req, res) {
-        console.log(req.session);
-        this.service.getOrgUsersRepositories(req.session.user.github_organization)
-            .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
-            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+        if (this.checkSession(req.session)) {
+            this.service.getOrgUsersRepositories(req.session.user.github_organization)
+                .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
+                .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+        } else {
+            this.statusHandler.sendJson(res, this.statusHandler.forbidden, MessageUtil.getErrors().NOT_CONNECTED.fr);
+        }
     }
 }
 

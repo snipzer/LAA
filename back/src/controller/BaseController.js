@@ -19,7 +19,6 @@ class BaseController {
                 if (err) {
                     reject(err);
                 } else {
-                    console.log(req.session);
                     resolve(req);
                 }
             });

@@ -12,7 +12,11 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueLocalStorage);
 
-Vue.http.options.xhr = {withCredentials: false};
+Vue.http.interceptors.push((request, next) => {
+    request.credentials = true;
+    next();
+});
+
 Vue.http.options.emulateJSON = true;
 Vue.http.options.emulateHTTP = true;
 Vue.http.options.crossOrigin = true;

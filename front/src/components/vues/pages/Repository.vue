@@ -40,8 +40,10 @@
                     let response = await Vue.services.github.getRepositories(Vue.localStorage.get("userToken"));
                     this.repositories = response.body;
                 } catch(err) {
-                    console.log(err);
-                    // alert('Il semble y avoir eu un probleme')
+                    if(err.status === 403) {
+                        alert(err.body);
+                        this.$router.push("login")
+                    }
                 }
             }
         }
