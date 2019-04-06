@@ -1,18 +1,20 @@
 <template>
     <div class="row">
-        <div class="col">
-            <h1>Ici les répositories les plus contribuer par les membres de l'organisation</h1>
-            <div class="row">
-                <div class="col">
-                    <div v-for="repository in repositories">
-                        <div class="card" style="width: 100%;">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <a :href="repository.url" target="_blank" class="card-link">{{ repository.reponame }}</a>
-                                </h5>
-                                <p class="card-text">{{repository.stargazer}} étoile</p>
-                                <p class="card-text"><template v-for="user in repository.users">{{user}} </template></p>
-                            </div>
+        <div class="row width-100">
+            <div class="col">
+                <button class="btn btn-success" style="float: right" @click="refreshRepositories" >Refresh</button>
+            </div>
+        </div>
+        <div class="row width-100">
+            <div class="col">
+                <div v-for="repository in repositories">
+                    <div class="card width-100" style="margin: 1%">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a :href="repository.url" target="_blank" class="card-link">{{ repository.reponame }}</a>
+                            </h5>
+                            <p class="card-text">{{repository.stargazer}} étoile</p>
+                            <p class="card-text">{{repository.users}}</p>
                         </div>
                     </div>
                 </div>
@@ -32,12 +34,23 @@
             }
         },
         created() {
+            console.log("toto")
             this.getRepositories()
         },
         methods: {
+            async refreshRepositories() {
+                try {
+                    await Vue.services.github.refreshRepositories(Vue.localStorage.get("userToken"));
+                } catch(err) {
+                    if(err.status === 403) {
+                        alert(err.body);
+                        this.$router.push("login")
+                    }
+                }
+            },
             async getRepositories() {
                 try {
-                    let response = await Vue.services.github.getRepositories(Vue.localStorage.get("userToken"));
+                    let response = await Vue.services.repository.getRepository(Vue.localStorage.get("userToken"));
                     this.repositories = response.body;
                 } catch(err) {
                     if(err.status === 403) {

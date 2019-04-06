@@ -8,6 +8,8 @@
         "no-param-reassign": "off",
         "arrow-body-style": "off",
         "no-underscore-dangle": "off",
-        "max-len": ["error", { "code": 180 }]
+        "max-len": ["error", { "code": 180 }],
+        "no-plusplus": "off",
+        "prefer-destructuring": "off"
     }
 }

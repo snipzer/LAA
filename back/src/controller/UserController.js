@@ -18,43 +18,43 @@ class UserController extends BaseController {
                 this.saveSession(req, userAndToken.user.data).then(() => {
                     this.statusHandler.sendJson(res, this.statusHandler.ok, userAndToken);
                 }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.unauthorized, err.message));
-            }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+            }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     logout(req, res) {
         this.service.logout(req)
             .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
-            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     updateUser(req, res) {
         this.service.updateUser(req.body)
             .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
-            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     createUser(req, res) {
         this.service.createUser(req.body)
             .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
-            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     deleteUser(req, res) {
         this.service.deleteUser(req.params.userId)
             .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
-            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     findUsers(req, res) {
         this.service.findUsers()
             .then(users => this.statusHandler.sendJson(res, this.statusHandler.ok, users))
-            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     getUser(req, res) {
         this.service.getUser(req.params.userId)
             .then(user => this.statusHandler.sendJson(res, this.statusHandler.ok, user))
-            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err.message));
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 }
 

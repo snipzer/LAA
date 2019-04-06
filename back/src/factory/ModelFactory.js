@@ -1,5 +1,6 @@
 const BaseFactory = require('./BaseFactory');
 const UserModel = require('../model/UserModel');
+const RepositoryModel = require('../model/RepositoryModel');
 const { instances } = require('gstore-node');
 /**
  * Here we instantiate the models
@@ -19,6 +20,7 @@ class ModelFactory extends BaseFactory {
             try {
                 const gstore = instances.get('default');
                 models.user = gstore.model('User', new UserModel(logger, 'user').getModel());
+                models.repository = gstore.model('Repository', new RepositoryModel(logger, 'repository').getModel());
                 resolve();
             } catch (err) {
                 reject(err);

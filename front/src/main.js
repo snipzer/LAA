@@ -2,11 +2,13 @@ import Vue from "vue";
 import VueLocalStorage from 'vue-localstorage';
 import VueResource from 'vue-resource';
 import UserService from './core/services/UserService'
+import GithubService from "./core/services/GithubService";
+import RepositoryService from "./core/services/RepositoryService";
 import VerificationFormUtil from './core/utils/VerificationFormUtil'
 import App from "./components/vues/App.vue";
 import routes from "./core/router/route.js";
 import VueRouter from "vue-router";
-import GithubService from "./core/services/GithubService";
+
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -29,6 +31,7 @@ Vue.utils.verificationForm = new VerificationFormUtil();
 Vue.services = {};
 Vue.services.user = new UserService(Vue.http, 'http://localhost:3000');
 Vue.services.github = new GithubService(Vue.http, 'http://localhost:3000');
+Vue.services.repository = new RepositoryService(Vue.http, 'http://localhost:3000');
 
 new Vue({
   el: "#app",

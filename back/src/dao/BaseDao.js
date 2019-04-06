@@ -18,11 +18,6 @@ class BaseDao {
         return this.Model.get(objectId);
     }
 
-    findByObject(object) {
-        this.logger.verbose(`${this.constructor.name} - ${this.getById.name}`);
-        return this.Model.list({ object });
-    }
-
     insert(object) {
         this.logger.verbose(`${this.constructor.name} - ${this.insert.name}`);
         const entityData = this.Model.sanitize(object);
@@ -43,11 +38,6 @@ class BaseDao {
     deleteById(id) {
         this.logger.verbose(`${this.constructor.name} - ${this.deleteById.name}`);
         return this.Model.delete(id);
-    }
-
-    deleteByObject(object) {
-        this.logger.verbose(`${this.constructor.name} - ${this.deleteByObject().name}`);
-        return this.Model.delete(object);
     }
 }
 

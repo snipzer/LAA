@@ -6,8 +6,8 @@ export default class GithubService extends BaseService {
         this._complementUrl = '/api/github';
     }
 
-    getRepositories (token) {
-      return this._http.get(`${this._baseUrl}${this._complementUrl}/repositories`, {
+    refreshRepositories (token) {
+      return this._http.get(`${this._baseUrl}${this._complementUrl}/refresh/repositories`, {
           headers: {
               Authorization: token
           }

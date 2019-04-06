@@ -2,8 +2,8 @@ const BaseService = require('./BaseService');
 const ApolloClientMaker = require('../config/ApolloClientMaker');
 
 class GithubService extends BaseService {
-    constructor(daos, logger) {
-        super(logger);
+    constructor(daos, services, logger) {
+        super(services, logger);
         this.dao = daos.github;
     }
 
@@ -15,7 +15,7 @@ class GithubService extends BaseService {
         return new Promise((resolve, reject) => {
             this.dao.getUserInformation()
                 .then(result => resolve(result))
-                .catch(err => reject(err));
+                .catch(err => this.rejectAndLogError(reject, err.message));
         });
     }
 
@@ -23,33 +23,53 @@ class GithubService extends BaseService {
         return new Promise((resolve, reject) => {
             this.dao.getRateLimit()
                 .then(result => resolve(result))
-                .catch(err => reject(err));
+                .catch(err => this.rejectAndLogError(reject, err.message));
         });
     }
 
-    getOrgUsersRepositories(githubOrganization) {
+    refreshRepository(user) {
         return new Promise((resolve, reject) => {
-            this.dao.getOrganizationUsers(githubOrganization)
+            this.dao.getOrganizationUsers(user.github_organization)
                 .then((response) => {
-                    const result = this._extractData(response);
-                    result.sort((a, b) => {
-                        return (a.stargazer < b.stargazer || a.users.length < b.users.length) ? 1 : -1;
-                    });
-                    resolve(result);
-                }).catch(err => reject(err));
+                    let result = this._extractData(response);
+                    // Bidoulle parce que je ne peux pas stocker d'array de string dans gcloud
+                    result = result.map((element) => {
+                        element.total_users = element.users.length;
+                        element.users = element.users.join(' ');
+                        return element;
+                    })
+                    this._saveData(result, user, resolve, reject);
+                }).catch(err => this.rejectAndLogError(reject, err.message));
         });
+    }
+
+    _saveData(result, user, resolve, reject) {
+        const now = new Date();
+        result.forEach(async (element) => {
+            element.createdOn = now;
+            element.owner = user.id;
+            try {
+                await this.services.repository.dao.insert(element);
+            } catch (err) {
+                this.rejectAndLogError(reject, err.message);
+            }
+        });
+        user.repository_current_date = now;
+        this.services.user.updateUser(user)
+            .then(() => resolve('ok'))
+            .catch(err => this.rejectAndLogError(reject, err.message));
     }
 
     _extractData(response) {
         const result = [];
         const members = response.data.viewer.membersWithRole.edges;
         for (let i = 0; i < members.length; i++) {
-            let repositories = members[i].node.repositories.edges;
-            let username = members[i].node.login;
+            const repositories = members[i].node.repositories.edges;
+            const username = members[i].node.login;
             for (let j = 0; j < repositories.length; j++) {
-                let reponame = repositories[j].node.name;
-                let stargazer = repositories[j].node.stargazers.totalCount;
-                let url = repositories[j].node.url;
+                const reponame = repositories[j].node.name;
+                const stargazer = repositories[j].node.stargazers.totalCount;
+                const url = repositories[j].node.url;
                 this._getRepositoriesInformation(result, reponame, username, stargazer, url);
             }
         }
@@ -58,7 +78,7 @@ class GithubService extends BaseService {
 
     _getRepositoriesInformation(result, reponame, username, stargazer, url) {
         let isPresent = false;
-        result.forEach(objet => {
+        result.forEach((objet) => {
             if (objet.reponame === reponame) {
                 isPresent = true;
                 if (!this._checkIfUserNamePresent(objet, username)) {
@@ -68,9 +88,9 @@ class GithubService extends BaseService {
         });
         if (!isPresent) {
             result.push({
-                reponame: reponame,
-                url: url,
-                stargazer: stargazer,
+                reponame,
+                url,
+                stargazer,
                 users: [username]
             });
         }
