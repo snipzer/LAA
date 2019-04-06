@@ -1,0 +1,9 @@
+indexes:
+  - kind: Repository
+    properties:
+    - name: createdOn
+    - name: owner
+    - name: stargazer
+      direction: desc
+    - name: total_users
+      direction: desc
