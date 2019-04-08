@@ -22,7 +22,7 @@ class GithubController extends BaseController {
     }
 
     refreshRepository(req, res) {
-        if (this.checkSession(req.session)) {
+        if (this.checkSession(req.session) && req.session.user.github_organization !== undefined) {
             this.service.refreshRepository(req.session.user)
                 .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
                 .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));

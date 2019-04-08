@@ -43,14 +43,14 @@ class GithubDao {
     login
     name
     location
-    membersWithRole(first: 100) {
+    membersWithRole(first: 20) {
       pageInfo {
       startCursor   
       }
       edges {
         node {
           login
-          repositories(first: 40, privacy: PUBLIC, orderBy: {field: STARGAZERS, direction: DESC}, isFork: false) {
+          repositories(first: 5, privacy: PUBLIC, orderBy: {field: STARGAZERS, direction: DESC}, isFork: false) {
             edges {
               node {
                 owner {
@@ -58,20 +58,8 @@ class GithubDao {
                 }
                 name
                 url
-                primaryLanguage {
-                  name
-                }
                 stargazers {
                   totalCount
-                }
-                pullRequests(first: 50) {
-                  edges {
-                    node {
-                      author {
-                        login
-                      }
-                    }
-                  }
                 }
               }
             }

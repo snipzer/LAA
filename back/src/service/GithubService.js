@@ -1,5 +1,6 @@
 const BaseService = require('./BaseService');
 const ApolloClientMaker = require('../config/ApolloClientMaker');
+const MessageUtil = require('../util/MessageUtil');
 
 class GithubService extends BaseService {
     constructor(daos, services, logger) {
@@ -37,9 +38,15 @@ class GithubService extends BaseService {
                         element.total_users = element.users.length;
                         element.users = element.users.join(' ');
                         return element;
-                    })
+                    });
                     this._saveData(result, user, resolve, reject);
-                }).catch(err => this.rejectAndLogError(reject, err.message));
+                }).catch(async (err) => {
+                    this.rejectAndLogError(reject, err.message);
+                    if (err.message === MessageUtil.getErrors().GITHUB_BAD_GATEWAY.en) {
+                        const result = await this.refreshRepository(user);
+                        if (result === 'ok') resolve('ok');
+                    }
+                });
         });
     }
 

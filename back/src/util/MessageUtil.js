@@ -12,6 +12,10 @@ class MessageUtil extends BaseUtil {
                 key: 'not_connected',
                 fr: 'Vous n\'êtes pas connecter',
                 en: 'You are not connected'
+            },
+            GITHUB_BAD_GATEWAY: {
+                key: 'github_bad_bateway',
+                en: 'Network error: Bad Gateway'
             }
         };
     }

@@ -41,9 +41,8 @@ class StatusHandler {
     }
 
     sendJson(res, status, data) {
-        data = data || {};
         res.status(status);
-        res.json(data);
+        res.json(data || {});
     }
 }
 
