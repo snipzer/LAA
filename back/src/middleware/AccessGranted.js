@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const MessageUtil = require('../util/MessageUtil');
 
 class AccessGranted {
     static public(req, res, next) {
@@ -9,7 +10,7 @@ class AccessGranted {
         const token = req.headers.authorization;
         jwt.verify(token, process.env.API_TOKEN_SECRET, (err, decoded) => {
             if (err) {
-                res.status(403).json({ error: 'Access forbidden' });
+                res.status(403).json(MessageUtil.getErrors().NOT_CONNECTED.fr);
             } else {
                 req.decoded = decoded;
                 next();

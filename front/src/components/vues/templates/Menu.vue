@@ -13,9 +13,6 @@
                     <router-link class="btn btn-primary menu-card" role="button" to="/repository">Repository</router-link>
                 </div>
                 <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/opensource">OpenSource</router-link>
-                </div>
-                <div class="col">
                     <router-link class="btn btn-primary menu-card" role="button" to="/language">Languages</router-link>
                 </div>
             </div>

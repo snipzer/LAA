@@ -61,9 +61,16 @@ class GithubService extends BaseService {
                 this.rejectAndLogError(reject, err.message);
             }
         });
+        const previousDate = user.repository_current_date;
         user.repository_current_date = now;
         this.services.user.updateUser(user)
-            .then(() => resolve('ok'))
+            .then(() => {
+                if (previousDate !== null) {
+
+                } else {
+                    resolve('ok');
+                }
+            })
             .catch(err => this.rejectAndLogError(reject, err.message));
     }
 
