@@ -71,6 +71,46 @@ class GithubDao {
 }`
         });
     }
+
+
+    getLanguage(githubOrganization) {
+        return this.client.query({
+            query: this.gql
+`{
+  viewer: organization(login: "${githubOrganization}") {
+    login
+    name
+    location
+    membersWithRole(first: 20) {
+      pageInfo {
+      startCursor   
+      }
+      edges {
+        node {
+          login
+          repositories(first: 5, privacy: PUBLIC, isFork: false) {
+            edges {
+              node {
+                languages(first: 5){
+                  edges{
+                    node{
+                      id
+                      name
+                      color
+                    }
+                  }
+                } 
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`
+
+        });
+    }
 }
 
 module.exports = GithubDao;
