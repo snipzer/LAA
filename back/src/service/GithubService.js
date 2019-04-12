@@ -84,13 +84,14 @@ class GithubService extends BaseService {
                 const reponame = repositories[j].node.name;
                 const stargazer = repositories[j].node.stargazers.totalCount;
                 const url = repositories[j].node.url;
-                this._getRepositoriesInformation(result, reponame, username, stargazer, url);
+                const langage = repositories[j].node.languages.name;
+                this._getRepositoriesInformation(result, reponame, username, stargazer, url,langage);
             }
         }
         return result;
     }
 
-    _getRepositoriesInformation(result, reponame, username, stargazer, url) {
+    _getRepositoriesInformation(result, reponame, username, stargazer, url,langage) {
         let isPresent = false;
         result.forEach((objet) => {
             if (objet.reponame === reponame) {
@@ -105,6 +106,7 @@ class GithubService extends BaseService {
                 reponame,
                 url,
                 stargazer,
+                langage,
                 users: [username]
             });
         }
