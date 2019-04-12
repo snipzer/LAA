@@ -1,12 +1,14 @@
 <template>
     <div class="row">
-        <h1>Ici les plus grand contributeurs openSource de l'organisation</h1>
+        <div class="col">
+            <img src="../vues/assets/loader.gif" alt="toto">
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "OpenSource",
+        name: "Loader",
     };
 </script>
 

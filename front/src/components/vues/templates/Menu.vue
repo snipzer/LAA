@@ -15,6 +15,9 @@
                 <div class="col">
                     <router-link class="btn btn-primary menu-card" role="button" to="/language">Languages</router-link>
                 </div>
+                <div class="col">
+                    <router-link class="btn btn-primary menu-card" role="button" to="/loader">Loader</router-link>
+                </div>
             </div>
         </div>
     </div>
