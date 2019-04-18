@@ -22,4 +22,12 @@ export default class UserService extends BaseService {
             github_token: githubToken
         });
     }
+
+    logout(token) {
+        return this._http.get(`${this._baseUrl}/logout`, {
+            headers: {
+                Authorization: token
+            }
+        })
+    }
 }

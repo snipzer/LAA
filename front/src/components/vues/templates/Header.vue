@@ -1,11 +1,11 @@
 <template>
     <div class="row" id="menu-top">
-        <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
         <div class="col">
             <h1>{{getAppName()}}</h1>
         </div>
         <div class="col">
             <p>Connecté en tant que : {{userLogin}}</p>
+            <Logout/>
         </div>
     </div>
 </template>
@@ -13,6 +13,7 @@
 <script>
     import Vue from "vue";
     import packageInfo from "../../../../package.json";
+    import Logout from "../pages/Logout.vue";
 
     export default {
         name: "Header",
@@ -25,6 +26,9 @@
             getAppName() {
                 return packageInfo.name.replace(/_/g, " ").toUpperCase();
             }
+        },
+        components: {
+            Logout
         }
     };
 </script>

@@ -4,12 +4,12 @@ const AccessGranted = require('../middleware/AccessGranted');
 class UserController extends BaseController {
     registerRoutes(routePreffix) {
         this.router.route('/login').post(AccessGranted.public, this.login.bind(this));
-        this.router.route('/logout').post(AccessGranted.public, this.logout.bind(this));
-        this.router.route(`${routePreffix}`).get(AccessGranted.public, this.findUsers.bind(this));
-        this.router.route(`${routePreffix}/:userId`).get(AccessGranted.public, this.getUser.bind(this));
-        this.router.route(`${routePreffix}`).post(AccessGranted.public, this.createUser.bind(this));
-        this.router.route(`${routePreffix}/update`).post(AccessGranted.public, this.updateUser.bind(this));
-        this.router.route(`${routePreffix}/:userId`).delete(AccessGranted.public, this.deleteUser.bind(this));
+        this.router.route('/logout').get(AccessGranted.public, this.logout.bind(this));
+        this.router.route(`${routePreffix}`).get(AccessGranted.restricted, this.findUsers.bind(this));
+        this.router.route(`${routePreffix}/:userId`).get(AccessGranted.restricted, this.getUser.bind(this));
+        this.router.route(`${routePreffix}`).post(AccessGranted.restricted, this.createUser.bind(this));
+        this.router.route(`${routePreffix}/update`).post(AccessGranted.restricted, this.updateUser.bind(this));
+        this.router.route(`${routePreffix}/:userId`).delete(AccessGranted.restricted, this.deleteUser.bind(this));
     }
 
     login(req, res) {
