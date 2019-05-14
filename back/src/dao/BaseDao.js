@@ -28,6 +28,18 @@ class BaseDao {
         });
     }
 
+    insertAll(objects) {
+        this.logger.verbose(`${this.constructor.name} - ${this.insert.name}`);
+        objects.forEach((object) => {
+            const entityData = this.Model.sanitize(object);
+            const entity = new this.Model(entityData);
+            const transaction = this.connexion.transaction();
+            return transaction.run().then(() => {
+                return entity.save(transaction).then(() => transaction.commit());
+            });
+        });
+    }
+
     update(object) {
         this.logger.verbose(`${this.constructor.name} - ${this.update.name}`);
         const objectId = object.id;

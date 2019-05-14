@@ -1,5 +1,5 @@
 <template>
-    <button v-on:click="logout()"><img src="../assets/logout.png" alt="logout" width="50" height="50"></button>
+    <button class="btn btn-info" v-on:click="logout()"><img src="../assets/logout.png" alt="logout" width="15" height="15"></button>
 </template>
 
 <script>

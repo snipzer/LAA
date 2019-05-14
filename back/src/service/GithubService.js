@@ -28,9 +28,9 @@ class GithubService extends BaseService {
         });
     }
 
-    refreshRepository(user) {
+    refreshRepository(session) {
         return new Promise((resolve, reject) => {
-            this.dao.getOrganizationUsers(user.github_organization)
+            this.dao.getOrganizationUsers(session.user.github_organization)
                 .then((response) => {
                     let result = this._extractData(response);
                     // Bidoulle parce que je ne peux pas stocker d'array de string dans gcloud
@@ -39,39 +39,40 @@ class GithubService extends BaseService {
                         element.users = element.users.join(' ');
                         return element;
                     });
-                    this._saveData(result, user, resolve, reject);
+                    this._saveData(result, session, resolve, reject);
                 }).catch(async (err) => {
                     this.rejectAndLogError(reject, err.message);
                     if (err.message === MessageUtil.getErrors().GITHUB_BAD_GATEWAY.en) {
-                        const result = await this.refreshRepository(user);
+                        const result = await this.refreshRepository(session);
                         if (result === 'ok') resolve('ok');
                     }
                 });
         });
     }
 
-    _saveData(result, user, resolve, reject) {
+    _saveData(result, session, resolve, reject) {
         const now = new Date();
+        const insertArray = [];
         result.forEach(async (element) => {
             element.createdOn = now;
-            element.owner = user.id;
+            element.owner = session.user.id;
             try {
-                await this.services.repository.dao.insert(element);
+                insertArray.push(this.services.repository.dao.insert(element));
             } catch (err) {
                 this.rejectAndLogError(reject, err.message);
             }
         });
-        const previousDate = user.repository_current_date;
-        user.repository_current_date = now;
-        this.services.user.updateUser(user)
-            .then(() => {
-                if (previousDate !== null) {
-
-                } else {
-                    resolve('ok');
-                }
-            })
-            .catch(err => this.rejectAndLogError(reject, err.message));
+        Promise.all(insertArray).then(() => {
+            const lastDate = new Date(session.user.repository_current_date);
+            session.user.repository_current_date = now;
+            this.services.user.updateUser(session.user).then((datastoreEntity) => {
+                session.user = datastoreEntity.data;
+                session.user.id = datastoreEntity.key.id;
+                this.services.repository.deleteAllByOwnerAndDate(session.user.id, lastDate)
+                    .then(() => resolve('ok'))
+                    .catch(err => this.rejectAndLogError(reject, err.message));
+            }).catch(err => this.rejectAndLogError(reject, err.message));
+        }).catch(err => this.rejectAndLogError(err.message));
     }
 
     _extractData(response) {
@@ -84,14 +85,13 @@ class GithubService extends BaseService {
                 const reponame = repositories[j].node.name;
                 const stargazer = repositories[j].node.stargazers.totalCount;
                 const url = repositories[j].node.url;
-                const langage = repositories[j].node.languages.name;
-                this._getRepositoriesInformation(result, reponame, username, stargazer, url,langage);
+                this._getRepositoriesInformation(result, reponame, username, stargazer, url);
             }
         }
         return result;
     }
 
-    _getRepositoriesInformation(result, reponame, username, stargazer, url,langage) {
+    _getRepositoriesInformation(result, reponame, username, stargazer, url) {
         let isPresent = false;
         result.forEach((objet) => {
             if (objet.reponame === reponame) {
@@ -106,7 +106,6 @@ class GithubService extends BaseService {
                 reponame,
                 url,
                 stargazer,
-                langage,
                 users: [username]
             });
         }

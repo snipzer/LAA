@@ -4,8 +4,19 @@
             <h1>{{getAppName()}}</h1>
         </div>
         <div class="col">
-            <p>Connecté en tant que : {{userLogin}}</p>
-            <Logout/>
+            <div class="row">
+                <div class="col">
+                    <div v-if="userLogin !== null && userLogin.length > 0">
+                        <p>{{userLogin}}</p>
+                    </div>
+                    <div v-else>
+                        <p>Vous n'êtes pas connecter</p>
+                    </div>
+                </div>
+                <div class="col" style="text-align: right">
+                    <Logout/>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -17,14 +28,20 @@
 
     export default {
         name: "Header",
-        data: function () {
-            return {
-                userLogin: Vue.localStorage.get("userLogin")
+        created() {
+            this.getUserLogin();
+        },
+        computed: {
+            userLogin() {
+                return Vue.localStorage.get("userLogin")
             }
         },
         methods: {
             getAppName() {
                 return packageInfo.name.replace(/_/g, " ").toUpperCase();
+            },
+            getUserLogin() {
+                return Vue.localStorage.get("userLogin")
             }
         },
         components: {

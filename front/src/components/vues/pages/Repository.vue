@@ -61,7 +61,6 @@
                     let response = await Vue.services.repository.getRepository(Vue.localStorage.get("userToken"));
                     if(response.body.length === 0) {
                         await this.refreshRepositories();
-                        await this.getRepositories();
                     }
                     this.repositories = response.body;
                     this.loading = false;
