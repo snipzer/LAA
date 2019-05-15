@@ -15,7 +15,7 @@
                 <InputText v-model="githubTokenData.value" :placeholder="githubTokenData.placeholder"></InputText>
                 <InputPassword v-model="passwordData.value" :placeholder="passwordData.placeholder"></InputPassword>
                 <InputPassword v-model="passwordConfirmData.value" :placeholder="passwordConfirmData.placeholder"></InputPassword>
-                <button class="btn btn-primary button-submit" v-on:click="submit()">Login !</button>
+                <button class="btn btn-primary button-submit" v-on:click="submit()">Register !</button>
             </div>
         </div>
         <div class="col"></div>

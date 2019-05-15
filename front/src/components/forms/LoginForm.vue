@@ -46,7 +46,10 @@
                     Vue.localStorage.set("userId", result.data.user.data.id);
                     Vue.localStorage.set("userToken", result.data.token);
                     this.$router.push("repository");
-                }).catch(err => console.log(err));
+                }).catch(err => {
+                    console.log(err);
+                    alert(err.body);
+                });
             }
         }
     };

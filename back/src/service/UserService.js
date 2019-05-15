@@ -23,7 +23,7 @@ class UserService extends BaseService {
                         reject(new Error(MessageUtil.getErrors().INVALID_CREDENTIAL.fr));
                     }
                     resolve(res === true);
-                }).catch(err => this.rejectAndLogError(reject, err));
+                }).catch(err => this.rejectAndLogError(reject, err.message));
             }).catch(err => this.rejectAndLogError(reject, err.message));
         });
     }
@@ -55,7 +55,6 @@ class UserService extends BaseService {
             BcryptUtil.generatePassword(user.password).then((hash) => {
                 user.password = hash;
                 user.createdOn = new Date();
-                user.repository_current_date = new Date();
                 this.dao.insert(user)
                     .then(result => resolve(result))
                     .catch(err => this.rejectAndLogError(reject, err.message));

@@ -10,7 +10,6 @@ class UserModel extends BaseModel {
             github_token: { type: String, required: true },
             github_login: { type: String, required: true },
             github_organization: { type: String, required: true },
-            repository_current_date: { type: Date, required: false },
             createdOn: {
                 type: Date, default: this.connexion.defaultValues.NOW, write: false, read: true
             }

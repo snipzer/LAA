@@ -30,8 +30,8 @@ class GithubService extends BaseService {
 
     refreshRepository(session) {
         return new Promise((resolve, reject) => {
-            this.dao.getOrganizationUsers(session.user.github_organization)
-                .then((response) => {
+            this.services.repository.deleteAllByOwnerAndDate(session.user.id).then(() => {
+                this.dao.getOrganizationUsers(session.user.github_organization).then((response) => {
                     let result = this._extractData(response);
                     // Bidoulle parce que je ne peux pas stocker d'array de string dans gcloud
                     result = result.map((element) => {
@@ -47,14 +47,13 @@ class GithubService extends BaseService {
                         if (result === 'ok') resolve('ok');
                     }
                 });
+            }).catch(err => this.rejectAndLogError(reject, err.message));
         });
     }
 
     _saveData(result, session, resolve, reject) {
-        const now = new Date();
         const insertArray = [];
         result.forEach(async (element) => {
-            element.createdOn = now;
             element.owner = session.user.id;
             try {
                 insertArray.push(this.services.repository.dao.insert(element));
@@ -62,17 +61,9 @@ class GithubService extends BaseService {
                 this.rejectAndLogError(reject, err.message);
             }
         });
-        Promise.all(insertArray).then(() => {
-            const lastDate = new Date(session.user.repository_current_date);
-            session.user.repository_current_date = now;
-            this.services.user.updateUser(session.user).then((datastoreEntity) => {
-                session.user = datastoreEntity.data;
-                session.user.id = datastoreEntity.key.id;
-                this.services.repository.deleteAllByOwnerAndDate(session.user.id, lastDate)
-                    .then(() => resolve('ok'))
-                    .catch(err => this.rejectAndLogError(reject, err.message));
-            }).catch(err => this.rejectAndLogError(reject, err.message));
-        }).catch(err => this.rejectAndLogError(err.message));
+        Promise.all(insertArray)
+            .then(() => resolve('ok'))
+            .catch(err => this.rejectAndLogError(err.message));
     }
 
     _extractData(response) {

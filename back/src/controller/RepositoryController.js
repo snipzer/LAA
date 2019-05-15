@@ -9,7 +9,7 @@ class RepositoryController extends BaseController {
 
     findAllByOwner(req, res) {
         if (this.checkSession(req.session)) {
-            this.service.findAllByOwnerAndDate(req.session.user.id, new Date(req.session.user.repository_current_date))
+            this.service.findAllByOwnerAndDate(req.session.user.id)
                 .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
                 .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
         } else {

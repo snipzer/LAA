@@ -10,9 +10,6 @@ class RepositoryModel extends BaseModel {
             users: { type: String, required: true },
             total_users: { type: Number, required: true },
             owner: { type: String, required: true },
-            createdOn: {
-                type: Date, read: true
-            }
         });
     }
 }
