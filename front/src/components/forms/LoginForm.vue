@@ -39,7 +39,7 @@
             }
         },
         methods: {
-            updateUserBody() {
+            submit() {
                 Vue.services.user.login(this.emailData.value, this.passwordData.value).then(result => {
                     Vue.localStorage.set("userLogin", result.data.user.data.email);
                     Vue.localStorage.set("userOrganization", result.data.user.data.github_organization);

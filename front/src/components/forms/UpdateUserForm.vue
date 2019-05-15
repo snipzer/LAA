@@ -48,8 +48,8 @@
         },
         data() {
             return {
-                user: null,
                 errors: [],
+                user: null,
                 emailData: {
                     value: '',
                     placeholder: 'Adresse email',
@@ -86,12 +86,18 @@
         },
         methods: {
             async getUser() {
-                Vue.services.user.getUser(Vue.localStorage.get("userToken"), Vue.localStorage.get("userId")).then(user => {
+                Vue.services.user.getUser(Vue.localStorage.get("userToken"), Vue.localStorage.get("userId")).then((response) => {
+                    const user = response.body.data;
+                    user.id = response.body.key.id;
+                    this.emailData.value = user.email;
+                    this.githubLoginData.value = user.github_login;
+                    this.githubOrganizationData.value = user.github_organization;
+                    this.githubTokenData.value = user.github_token;
                     this.user = user;
-                    console.log(user);
                 }).catch(err => {
                     console.log(err);
                     alert(err.body);
+                    this.$router.push('login');
                 });
             },
             checkEmptyData() {
@@ -121,8 +127,15 @@
             },
             updateUserBody() {
                 if(this.checkData()) {
-                    Vue.services.user.register(this.emailData.value, this.passwordData.value, this.githubLoginData.value, this.githubOrganizationData.value,this.githubTokenData.value).then(result => {
-                        this.$router.push("login");
+                    const user = {
+                        id: this.user.id,
+                        email: this.emailData.value,
+                        github_login: this.githubLoginData.value,
+                        github_organization: this.githubOrganizationData.value,
+                        github_token: this.githubTokenData.value
+                    };
+                    Vue.services.user.update(Vue.localStorage.get("userToken"), user).then(result => {
+                        this.$router.push("update");
                     }).catch(err => console.log(err));
                 }
             },

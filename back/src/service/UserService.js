@@ -43,7 +43,6 @@ class UserService extends BaseService {
     updateUser(user) {
         return new Promise((resolve, reject) => {
             user.password = undefined;
-            user.github_organization = undefined;
             this.dao.update(user)
                 .then(result => resolve(DatastoreUtil.getEntityInformation(result)))
                 .catch(err => this.rejectAndLogError(reject, err.message));
