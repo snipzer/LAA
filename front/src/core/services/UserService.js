@@ -65,4 +65,12 @@ export default class UserService extends BaseService {
             }
         });
     }
+
+    checkUserToken(token) {
+        return this._http.get(`${this._baseUrl}/checkSession`, {
+            headers: {
+                Authorization: token
+            }
+        })
+    }
 }

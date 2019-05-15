@@ -9,7 +9,6 @@ import App from "./components/vues/App.vue";
 import routes from "./core/router/route.js";
 import VueRouter from "vue-router";
 
-
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(VueLocalStorage);

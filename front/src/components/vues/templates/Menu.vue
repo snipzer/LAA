@@ -1,19 +1,25 @@
 <template>
     <div class="row" id="menu">
         <div class="col">
-            <Header :username="username"/>
-            <div class="row" id="menu-bot">
-                <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/login">Me connecter</router-link>
+            <Header :username="userLogin"></Header>
+            <div v-if="isLogged">
+                <div class="row menu-bot">
+                    <div class="col">
+                        <router-link class="btn btn-primary menu-card" role="button" to="/update">Mon compte</router-link>
+                    </div>
+                    <div class="col">
+                        <router-link class="btn btn-primary menu-card" role="button" to="/repository">Mes repositories</router-link>
+                    </div>
                 </div>
-                <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/register">M'enregistrer</router-link>
-                </div>
-                <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/update">Mon compte</router-link>
-                </div>
-                <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/repository">Mes repositories</router-link>
+            </div>
+            <div v-else>
+                <div class="row menu-bot">
+                    <div class="col">
+                        <router-link class="btn btn-primary menu-card" role="button" to="/login">Me connecter</router-link>
+                    </div>
+                    <div class="col">
+                        <router-link class="btn btn-primary menu-card" role="button" to="/register">M'enregistrer</router-link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,13 +27,25 @@
 </template>
 
 <script>
+    // TODO Fix le comportement pour le login logout
+    import Vue from "vue";
     import Header from "./Header.vue";
     export default {
         name: "MenuPage",
         data: () => {
             return {
-                username: "toto"
+                isLogged: false,
             }
+        },
+        async created() {
+            const token = Vue.localStorage.get("userToken");
+            Vue.services.user.checkUserToken(token)
+                .then(() => {
+                    this.isLogged = true;
+                })
+                .catch(() => {
+                    this.isLogged = false;
+                });
         },
         components: {
             Header
@@ -43,7 +61,8 @@
         border-bottom: 10px solid lightblue;
         border-radius: 35px;
     }
-    #menu-bot {
+
+    .menu-bot {
         margin-top: 2%;
         margin-bottom: 2%;
     }

@@ -38,6 +38,9 @@
                 userLogin: ''
             }
         },
+        created() {
+            this.$forceUpdate();
+        },
         methods: {
             submit() {
                 Vue.services.user.login(this.emailData.value, this.passwordData.value).then(result => {
@@ -45,6 +48,7 @@
                     Vue.localStorage.set("userOrganization", result.data.user.data.github_organization);
                     Vue.localStorage.set("userId", result.data.user.data.id);
                     Vue.localStorage.set("userToken", result.data.token);
+                    this.$forceUpdate();
                     this.$router.push("repository");
                 }).catch(err => {
                     console.log(err);

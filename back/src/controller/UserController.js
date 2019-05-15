@@ -6,11 +6,20 @@ class UserController extends BaseController {
     registerRoutes(routePreffix) {
         this.router.route('/logout').get(AccessGranted.public, this.logout.bind(this));
         this.router.route('/login').post(AccessGranted.public, this.login.bind(this));
+        this.router.route('/checkSession').get(AccessGranted.restricted, this.checkUserToken.bind(this));
         this.router.route(`${routePreffix}`).post(AccessGranted.public, this.createUser.bind(this));
         this.router.route(`${routePreffix}/:userId`).get(AccessGranted.restricted, this.getUser.bind(this));
         this.router.route(`${routePreffix}/update`).post(AccessGranted.restricted, this.updateUser.bind(this));
         this.router.route(`${routePreffix}/updatePassword`).post(AccessGranted.restricted, this.updatePassword.bind(this));
         this.router.route(`${routePreffix}/:userId`).delete(AccessGranted.restricted, this.deleteUser.bind(this));
+    }
+
+    checkUserToken(req, res) {
+        if (this.checkSession(req.session)) {
+            this.statusHandler.sendJson(res, this.statusHandler.ok, true);
+        } else {
+            this.statusHandler.sendJson(res, this.statusHandler.ok, false);
+        }
     }
 
     login(req, res) {
