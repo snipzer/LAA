@@ -30,4 +30,12 @@ export default class UserService extends BaseService {
             }
         })
     }
+
+    getUser(token, userId) {
+        return this._http.get(`${this._baseUrl}${this._complementUrl}/`+userId, {
+            headers: {
+                Authorization: token
+            }
+        });
+    }
 }

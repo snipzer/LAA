@@ -15,7 +15,7 @@
                 <InputText v-model="githubTokenData.value" :placeholder="githubTokenData.placeholder"></InputText>
                 <InputPassword v-model="passwordData.value" :placeholder="passwordData.placeholder"></InputPassword>
                 <InputPassword v-model="passwordConfirmData.value" :placeholder="passwordConfirmData.placeholder"></InputPassword>
-                <button class="btn btn-primary button-submit" v-on:click="submit()">Register !</button>
+                <button class="btn btn-primary button-submit" v-on:click="submit()">Créer mon compte !</button>
             </div>
         </div>
         <div class="col"></div>
@@ -67,15 +67,19 @@
         methods: {
             checkEmptyData() {
                 if(_.isEmpty(this.emailData.value)) {
-                    this.errors.push("L'addresse email ne peut pas être vide !");
-                } else if (_.isEmpty(this.passwordConfirmData.value) || _.isEmpty(this.passwordData.value)) {
-                    this.errors.push("Les champs mot de passes ne peuvent être vide.");
-                } else if (_.isEmpty(this.githubLoginData.value)) {
-                    this.errors.push("Le champ login github ne peut être vide.");
-                } else if (_.isEmpty(this.githubOrganizationData.value)) {
-                    this.errors.push("Le champ organisation github ne peut être vide.");
-                } else if (_.isEmpty(this.githubTokenData.value)) {
-                    this.errors.push("Le champ token de github ne peut être vide.");
+                    this.errors.push("L'addresse email est obligatoire.");
+                }
+                if (_.isEmpty(this.passwordConfirmData.value) || _.isEmpty(this.passwordData.value)) {
+                    this.errors.push("Les champs mot de passes sont obligatoire.");
+                }
+                if (_.isEmpty(this.githubLoginData.value)) {
+                    this.errors.push("Le champ login github est obligatoire.");
+                }
+                if (_.isEmpty(this.githubOrganizationData.value)) {
+                    this.errors.push("Le champ organisation github est obligatoire.");
+                }
+                if (_.isEmpty(this.githubTokenData.value)) {
+                    this.errors.push("Le champ token de github est obligatoire.");
                 }
                 return this.errors.length === 0;
             },

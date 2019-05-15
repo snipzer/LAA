@@ -4,16 +4,16 @@
             <Header :username="username"/>
             <div class="row" id="menu-bot">
                 <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/login">Login</router-link>
+                    <router-link class="btn btn-primary menu-card" role="button" to="/login">Me connecter</router-link>
                 </div>
                 <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/register">Register</router-link>
+                    <router-link class="btn btn-primary menu-card" role="button" to="/register">M'enregistrer</router-link>
                 </div>
                 <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/repository">Repository</router-link>
+                    <router-link class="btn btn-primary menu-card" role="button" to="/repository">Mes repositories</router-link>
                 </div>
                 <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/language">Languages</router-link>
+                    <router-link class="btn btn-primary menu-card" role="button" to="/update">Modifier mon compte</router-link>
                 </div>
                 <div class="col">
                     <router-link class="btn btn-primary menu-card" role="button" to="/loader">Loader</router-link>

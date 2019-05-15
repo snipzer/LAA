@@ -5,7 +5,7 @@
             <div class="form-group">
                 <InputText v-model="emailData.value" :placeholder="emailData.placeholder" :required="emailData.isRequired"></InputText>
                 <InputPassword v-model="passwordData.value" :placeholder="passwordData.placeholder" :required="passwordData.isRequired"></InputPassword>
-                <button class="btn btn-primary button-submit" v-on:click="submit()">Login !</button>
+                <button class="btn btn-primary button-submit" v-on:click="submit()">Connexion !</button>
             </div>
         </div>
         <div class="col"></div>
@@ -39,7 +39,7 @@
             }
         },
         methods: {
-            submit() {
+            updateUserBody() {
                 Vue.services.user.login(this.emailData.value, this.passwordData.value).then(result => {
                     Vue.localStorage.set("userLogin", result.data.user.data.email);
                     Vue.localStorage.set("userOrganization", result.data.user.data.github_organization);
