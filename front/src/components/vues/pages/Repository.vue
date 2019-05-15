@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="!loading">
         <div class="row width-100">
             <div class="col">
                 <button class="btn btn-success" style="float: right" @click="refreshRepositories" >Refresh</button>
@@ -7,7 +7,6 @@
         </div>
         <div class="row width-100">
             <div class="col">
-                <div v-if="!loading">
                     <div v-for="repository in repositories">
                         <div class="card width-100" style="margin: 1%">
                             <div class="card-body">
@@ -19,17 +18,17 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div v-else>
-                    <p>Chargement en cours...</p>
-                </div>
             </div>
         </div>
+    </div>
+    <div v-else>
+        <Loader></Loader>
     </div>
 </template>
 
 <script>
     import Vue from "vue";
+    import Loader from "../../layout/Loader.vue";
 
     export default {
         name: "Repository",
@@ -46,6 +45,7 @@
             async refreshRepositories() {
                 try {
                     this.loading = true;
+                    this.repositories = null;
                     await Vue.services.github.refreshRepositories(Vue.localStorage.get("userToken"));
                     await this.getRepositories();
                 } catch(err) {
@@ -71,6 +71,9 @@
                     }
                 }
             }
+        },
+        components: {
+            Loader
         }
     };
 </script>

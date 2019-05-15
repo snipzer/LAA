@@ -1,12 +1,10 @@
 <template>
-    <div class="container" id="footer">
-        <div class="row">
-            <div class="col">
-                <h2 class="text-footer">{{this.getAppName()}}</h2>
-            </div>
-            <div class="col">
-                <h2 align="right">Version : {{version}}</h2>
-            </div>
+    <div class="row" id="footer">
+        <div class="col">
+            <h2 class="text-footer">{{this.getAppName()}}</h2>
+        </div>
+        <div class="col">
+            <h2 align="right">Version : {{version}}</h2>
         </div>
     </div>
 </template>

@@ -5,7 +5,7 @@ const AccessGranted = require('../middleware/AccessGranted');
 const DatastoreUtil = require('../util/DatastoreUtil');
 
 class UserService extends BaseService {
-    constructor(daos, services,logger) {
+    constructor(daos, services, logger) {
         super(services, logger);
         this.dao = daos.user;
     }

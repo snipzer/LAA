@@ -2,17 +2,17 @@
     <div id="app">
         <div class="row">
             <div class="col">
-                <MenuPage/>
+                <MenuPage></MenuPage>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <BodyPage/>
+                <BodyPage></BodyPage>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <FooterPage/>
+                <FooterPage></FooterPage>
             </div>
         </div>
     </div>
