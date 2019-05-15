@@ -14,7 +14,7 @@ class RepositoryService extends BaseService {
         });
     }
 
-    deleteAllByOwnerAndDate(owner) {
+    deleteAllByOwner(owner) {
         return new Promise((resolve, reject) => {
             this.dao.findAllByOwnerAndDate(owner).then((result) => {
                 const promiseArray = [];

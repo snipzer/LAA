@@ -26,8 +26,14 @@
                         <InputPassword v-model="oldPasswordData.value" :placeholder="oldPasswordData.placeholder"></InputPassword>
                         <InputPassword v-model="passwordData.value" :placeholder="passwordData.placeholder"></InputPassword>
                         <InputPassword v-model="passwordConfirmData.value" :placeholder="passwordConfirmData.placeholder"></InputPassword>
+                        <input type="hidden" name="">
                         <button class="btn btn-primary button-submit" v-on:click="updateUserPassword()">Modifier le mot de passe !</button>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-danger button-submit" v-on:click="deleteUser()">Supprimer mon compte !</button>
                 </div>
             </div>
         </div>
@@ -95,7 +101,6 @@
                     this.githubTokenData.value = user.github_token;
                     this.user = user;
                 }).catch(err => {
-                    console.log(err);
                     alert(err.body);
                     this.$router.push('login');
                 });
@@ -134,9 +139,15 @@
                         github_organization: this.githubOrganizationData.value,
                         github_token: this.githubTokenData.value
                     };
-                    Vue.services.user.update(Vue.localStorage.get("userToken"), user).then(result => {
+                    Vue.services.user.updateBody(Vue.localStorage.get("userToken"), user).then(result => {
+                        alert("Modification bien effectuer");
                         this.$router.push("update");
-                    }).catch(err => console.log(err));
+                    }).catch((err) => {
+                        if(err.status === 403) {
+                            alert(err.body);
+                            this.$router.push("login")
+                        }
+                    });
                 }
             },
             checkPassword() {
@@ -150,7 +161,28 @@
             },
             updateUserPassword() {
                 if(this.checkPassword()) {
-
+                    Vue.services.user.updatePassword(Vue.localStorage.get("userToken"), this.user.id, this.oldPasswordData.value, this.passwordData.value, this.passwordConfirmData.value).then(() => {
+                        alert("Modification bien effectuer");
+                        this.$router.push("update");
+                    }).catch((err) => {
+                        if(err.status === 403) {
+                            alert(err.body);
+                            this.$router.push("login");
+                        }
+                    });
+                }
+            },
+            deleteUser() {
+                if(confirm("Vous êtes sur de vouloir effectuer cette action ? Toutes les données seront supprimer")) {
+                    Vue.services.user.deleteUser(Vue.localStorage.get("userToken"), this.user.id).then(() => {
+                        alert("Suppression bien effectuer");
+                        this.$router.push("login");
+                    }).catch((err) => {
+                        if(err.status === 403) {
+                            alert(err.body);
+                            this.$router.push("login")
+                        }
+                    })
                 }
             }
         }

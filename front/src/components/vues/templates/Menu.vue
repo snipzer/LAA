@@ -10,10 +10,10 @@
                     <router-link class="btn btn-primary menu-card" role="button" to="/register">M'enregistrer</router-link>
                 </div>
                 <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/repository">Mes repositories</router-link>
+                    <router-link class="btn btn-primary menu-card" role="button" to="/update">Mon compte</router-link>
                 </div>
                 <div class="col">
-                    <router-link class="btn btn-primary menu-card" role="button" to="/update">Modifier mon compte</router-link>
+                    <router-link class="btn btn-primary menu-card" role="button" to="/repository">Mes repositories</router-link>
                 </div>
                 <div class="col">
                     <router-link class="btn btn-primary menu-card" role="button" to="/loader">Loader</router-link>
@@ -27,7 +27,7 @@
     import Header from "./Header.vue";
     export default {
         name: "MenuPage",
-        data: function () {
+        data: () => {
             return {
                 username: "toto"
             }

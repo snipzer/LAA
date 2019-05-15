@@ -30,7 +30,7 @@ class GithubService extends BaseService {
 
     refreshRepository(session) {
         return new Promise((resolve, reject) => {
-            this.services.repository.deleteAllByOwnerAndDate(session.user.id).then(() => {
+            this.services.repository.deleteAllByOwner(session.user.id).then(() => {
                 this.dao.getOrganizationUsers(session.user.github_organization).then((response) => {
                     let result = this._extractData(response);
                     // Bidoulle parce que je ne peux pas stocker d'array de string dans gcloud
@@ -63,7 +63,7 @@ class GithubService extends BaseService {
         });
         Promise.all(insertArray)
             .then(() => resolve('ok'))
-            .catch(err => this.rejectAndLogError(err.message));
+            .catch(err => this.rejectAndLogError(reject, err.message));
     }
 
     _extractData(response) {

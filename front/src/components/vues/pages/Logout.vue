@@ -7,14 +7,9 @@
 
     export default {
         name: "Logout",
-        async created() {
-            console.log("created")
-        },
         methods: {
             logout() {
-                console.log("logout");
-                Vue.services.user.logout(Vue.localStorage.get("userToken")).then(response => {
-                    console.log(response);
+                Vue.services.user.logout(Vue.localStorage.get("userToken")).then(() => {
                     Vue.localStorage.set("userLogin", "");
                     Vue.localStorage.set("userOrganization", "");
                     Vue.localStorage.set("userId", "");

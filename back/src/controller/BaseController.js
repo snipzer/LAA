@@ -12,9 +12,9 @@ class BaseController {
     registerRoutes(routePreffix) {
     }
 
-    saveSession(req, object) {
+    saveSession(req, user) {
         return new Promise((resolve, reject) => {
-            req.session.user = object;
+            req.session.user = user.data;
             req.session.save((err) => {
                 if (err) {
                     reject(err);
@@ -27,10 +27,6 @@ class BaseController {
 
     checkSession(session) {
         return session.user !== undefined;
-    }
-
-    sendMissingParameters(res) {
-        this.statusHandler.sendJson(res, this.statusHandler.internalServerError, { error: 'Missing parameters' });
     }
 }
 

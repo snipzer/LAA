@@ -31,13 +31,26 @@ export default class UserService extends BaseService {
         })
     }
 
-    update(token, user) {
+    updateBody(token, user) {
         return this._http.post(`${this._baseUrl}${this._complementUrl}/update`, {
             id: user.id,
             email: user.email,
             github_login: user.github_login,
             github_organization: user.github_organization,
             github_token: user.github_token
+        }, {
+            headers: {
+                Authorization: token
+            }
+        })
+    }
+
+    updatePassword(token, userId, oldPassword, password, passwordConfirm) {
+        return this._http.post(`${this._baseUrl}${this._complementUrl}/updatePassword`, {
+            id: userId,
+            oldPassword: oldPassword,
+            password: password,
+            passwordConfirm: passwordConfirm
         }, {
             headers: {
                 Authorization: token
