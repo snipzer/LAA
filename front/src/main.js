@@ -25,6 +25,8 @@ Vue.http.options.crossOrigin = true;
 Vue.http.headers.common['Access-Control-Allow-Origin'] = 'localhost:3000';
 Vue.config.productionTip = false;
 
+Vue.prototype.$bus = new Vue({});
+
 Vue.utils = {};
 Vue.utils.verificationForm = new VerificationFormUtil();
 Vue.services = {};

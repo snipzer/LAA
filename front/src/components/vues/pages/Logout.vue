@@ -8,12 +8,13 @@
     export default {
         name: "Logout",
         methods: {
-            logout() {
+            logout: function () {
                 Vue.services.user.logout(Vue.localStorage.get("userToken")).then(() => {
                     Vue.localStorage.set("userLogin", "");
                     Vue.localStorage.set("userOrganization", "");
                     Vue.localStorage.set("userId", "");
                     Vue.localStorage.set("userToken", "");
+                    this.$bus.$emit('authenticated', false);
                     this.$router.push("login");
                 }).catch(err => console.log(err));
             }

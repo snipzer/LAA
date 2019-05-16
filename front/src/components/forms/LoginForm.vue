@@ -23,7 +23,7 @@
             InputText,
             InputPassword
         },
-        data() {
+        data: () => {
             return {
                 emailData: {
                     value: '',
@@ -38,17 +38,14 @@
                 userLogin: ''
             }
         },
-        created() {
-            this.$forceUpdate();
-        },
         methods: {
-            submit() {
+            submit: function () {
                 Vue.services.user.login(this.emailData.value, this.passwordData.value).then(result => {
                     Vue.localStorage.set("userLogin", result.data.user.data.email);
                     Vue.localStorage.set("userOrganization", result.data.user.data.github_organization);
                     Vue.localStorage.set("userId", result.data.user.data.id);
                     Vue.localStorage.set("userToken", result.data.token);
-                    this.$forceUpdate();
+                    this.$bus.$emit('authenticated', true);
                     this.$router.push("repository");
                 }).catch(err => {
                     console.log(err);

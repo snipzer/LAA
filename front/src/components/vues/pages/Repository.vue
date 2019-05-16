@@ -42,7 +42,7 @@
             await this.getRepositories()
         },
         methods: {
-            async refreshRepositories() {
+            refreshRepositories: async function () {
                 try {
                     this.loading = true;
                     this.repositories = null;
@@ -51,11 +51,12 @@
                 } catch(err) {
                     if(err.status === 403) {
                         alert(err.body);
+                        this.$bus.$emit('authenticated', false);
                         this.$router.push("login")
                     }
                 }
             },
-            async getRepositories() {
+            getRepositories: async function () {
                 try {
                     this.loading = true;
                     let response = await Vue.services.repository.getRepository(Vue.localStorage.get("userToken"));
@@ -67,6 +68,7 @@
                 } catch(err) {
                     if(err.status === 403) {
                         alert(err.body);
+                        this.$bus.$emit('authenticated', false);
                         this.$router.push("login")
                     }
                 }

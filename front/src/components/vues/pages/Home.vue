@@ -8,11 +8,15 @@
 
     export default {
         name: "Home",
-        async created() {
+        created: function () {
             const token = Vue.localStorage.get("userToken");
-            Vue.services.user.checkUserToken(token)
-                .then(() => this.$router.push("repository"))
-                .catch(() => this.$router.push('login'));
+            Vue.services.user.checkUserToken(token).then(() => {
+                this.$bus.$emit('authenticated', true);
+                this.$router.push("repository")
+            }).catch(() => {
+                this.$bus.$emit('authenticated', false);
+                this.$router.push('login')
+            });
         },
         components: {
             Loader

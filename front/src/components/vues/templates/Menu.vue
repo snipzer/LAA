@@ -2,7 +2,7 @@
     <div class="row" id="menu">
         <div class="col">
             <Header></Header>
-            <div v-if="isLogged">
+            <div v-if="isAuthenticated">
                 <div class="row menu-bot">
                     <div class="col">
                         <router-link class="btn btn-primary menu-card" role="button" to="/update">Mon compte</router-link>
@@ -27,25 +27,27 @@
 </template>
 
 <script>
-    // TODO Fix le comportement pour le login logout
     import Vue from "vue";
     import Header from "./Header.vue";
     export default {
         name: "MenuPage",
         data: () => {
             return {
-                isLogged: false,
+                isAuthenticated: false
             }
         },
-        async created() {
+        created: function () {
+            this.$bus.$on('authenticated', (value) => {
+                console.log(value);
+                this.isAuthenticated = value;
+            });
             const token = Vue.localStorage.get("userToken");
-            Vue.services.user.checkUserToken(token)
-                .then(() => {
-                    this.isLogged = true;
-                })
-                .catch(() => {
-                    this.isLogged = false;
-                });
+            Vue.services.user.checkUserToken(token).then(() => {
+                this.$bus.$emit('authenticated', true);
+            }).catch(() => {
+                this.$bus.$emit('authenticated', false);
+                this.$router.push('login')
+            });
         },
         components: {
             Header
