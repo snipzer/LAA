@@ -28,20 +28,24 @@
 
     export default {
         name: "Header",
-        created() {
-            this.getUserLogin();
-        },
-        computed: {
-            userLogin() {
-                return Vue.localStorage.get("userLogin")
+        data: function () {
+            return {
+                userLogin: '',
             }
+        },
+        created() {
+            this.userLogin = Vue.localStorage.get("userLogin");
+            this.$bus.$on("authenticated", (isAuthenticated) => {
+                if(isAuthenticated) {
+                    this.userLogin = Vue.localStorage.get("userLogin");
+                } else {
+                    this.userLogin = "Vous n'êtes pas connecter."
+                }
+            });
         },
         methods: {
             getAppName() {
                 return packageInfo.name.replace(/_/g, " ").toUpperCase();
-            },
-            getUserLogin() {
-                return Vue.localStorage.get("userLogin")
             }
         },
         components: {
