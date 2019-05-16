@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="col" style="text-align: right">
-                    <Logout/>
+                    <Logout></Logout>
                 </div>
             </div>
         </div>

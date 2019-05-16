@@ -1,7 +1,7 @@
 <template>
     <div class="row" id="menu">
         <div class="col">
-            <Header :username="userLogin"></Header>
+            <Header></Header>
             <div v-if="isLogged">
                 <div class="row menu-bot">
                     <div class="col">

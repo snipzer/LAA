@@ -1,24 +1,20 @@
 <template>
-    <div class="row">
-        <div class="col"></div>
-        <div class="col">
-            <div v-if="errors.length">
-                <b>S'il vous plait, corriger les erreurs suivantes:</b>
-                <ul>
-                    <li v-for="error in errors" :key="error.id">{{ error }}</li>
-                </ul>
-            </div>
-            <div class="form-group">
-                <InputText v-model="emailData.value" :placeholder="emailData.placeholder"></InputText>
-                <InputText v-model="githubLoginData.value" :placeholder="githubLoginData.placeholder"></InputText>
-                <InputText v-model="githubOrganizationData.value" :placeholder="githubOrganizationData.placeholder"></InputText>
-                <InputText v-model="githubTokenData.value" :placeholder="githubTokenData.placeholder"></InputText>
-                <InputPassword v-model="passwordData.value" :placeholder="passwordData.placeholder"></InputPassword>
-                <InputPassword v-model="passwordConfirmData.value" :placeholder="passwordConfirmData.placeholder"></InputPassword>
-                <button class="btn btn-primary button-submit" v-on:click="submit()">Créer mon compte !</button>
-            </div>
+    <div>
+        <div v-if="errors.length">
+            <b>S'il vous plait, corriger les erreurs suivantes:</b>
+            <ul>
+                <li v-for="error in errors" :key="error.id">{{ error }}</li>
+            </ul>
         </div>
-        <div class="col"></div>
+        <div class="form-group">
+            <InputText v-model="emailData.value" :placeholder="emailData.placeholder"></InputText>
+            <InputText v-model="githubLoginData.value" :placeholder="githubLoginData.placeholder"></InputText>
+            <InputText v-model="githubOrganizationData.value" :placeholder="githubOrganizationData.placeholder"></InputText>
+            <InputText v-model="githubTokenData.value" :placeholder="githubTokenData.placeholder"></InputText>
+            <InputPassword v-model="passwordData.value" :placeholder="passwordData.placeholder"></InputPassword>
+            <InputPassword v-model="passwordConfirmData.value" :placeholder="passwordConfirmData.placeholder"></InputPassword>
+            <button class="btn btn-primary button-submit" v-on:click="submit()">Créer mon compte !</button>
+        </div>
     </div>
 </template>
 
