@@ -1,3 +1,11 @@
+const env = {
+    "ENV":"development",
+    "BACK_URL_ORIGIN":"laa-epsi-back.appspot.com",
+    "BACK_URL_HTTP":"https://",
+    // "BACK_URL_ORIGIN":"localhost:3000",
+    // "BACK_URL_HTTP":"http://"
+};
+
 import Vue from "vue";
 import VueLocalStorage from 'vue-localstorage';
 import VueResource from 'vue-resource';
@@ -22,7 +30,7 @@ Vue.http.interceptors.push((request, next) => {
 Vue.http.options.emulateJSON = true;
 Vue.http.options.emulateHTTP = true;
 Vue.http.options.crossOrigin = true;
-Vue.http.headers.common['Access-Control-Allow-Origin'] = 'localhost:3000';
+Vue.http.headers.common['Access-Control-Allow-Origin'] = env.BACK_URL_ORIGIN;
 Vue.config.productionTip = false;
 
 Vue.prototype.$bus = new Vue({});
@@ -30,9 +38,13 @@ Vue.prototype.$bus = new Vue({});
 Vue.utils = {};
 Vue.utils.verificationForm = new VerificationFormUtil();
 Vue.services = {};
-Vue.services.user = new UserService(Vue.http, 'http://localhost:3000');
-Vue.services.github = new GithubService(Vue.http, 'http://localhost:3000');
-Vue.services.repository = new RepositoryService(Vue.http, 'http://localhost:3000');
+
+let fullUrl = ''+env.BACK_URL_HTTP+env.BACK_URL_ORIGIN;
+
+
+Vue.services.user = new UserService(Vue.http, fullUrl);
+Vue.services.github = new GithubService(Vue.http, fullUrl);
+Vue.services.repository = new RepositoryService(Vue.http, fullUrl);
 
 new Vue({
   el: "#app",

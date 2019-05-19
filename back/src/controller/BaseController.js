@@ -14,14 +14,20 @@ class BaseController {
 
     saveSession(req, user) {
         return new Promise((resolve, reject) => {
-            req.session.user = user.data;
-            req.session.save((err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(req);
-                }
-            });
+            try {
+                req.session.user = user.data;
+                req.session.save((err) => {
+                    if (err) {
+                        this.logger.error(err);
+                        reject(err);
+                    } else {
+                        resolve(req);
+                    }
+                });
+            } catch (err) {
+                this.logger.error(err);
+                reject(err);
+            }
         });
     }
 

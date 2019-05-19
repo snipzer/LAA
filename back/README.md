@@ -43,6 +43,13 @@
 
 * Simply run `npm run commit` and answer the questions
 
+## Deploiement gcloud
+
+    `gcloud auth login`
+    `gcloud config set project-name`
+    `gcloud config set app/promote_by_default false`
+    `gcloud app deploy -v 1 --promote`
+
 ## Licence
 
 This repository is under Beerware licence, more information into LICENCE file

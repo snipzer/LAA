@@ -67,6 +67,7 @@ export default class UserService extends BaseService {
     }
 
     checkUserToken(token) {
+        console.log(this._baseUrl)
         return this._http.get(`${this._baseUrl}/checkSession`, {
             headers: {
                 Authorization: token

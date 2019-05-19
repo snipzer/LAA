@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "start": "vue-cli-service serve",
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "dotenv": "^8.0.0",
     "underscore": "^1.9.1",
     "vue": "^2.6.6",
     "vue-class-component": "^7.0.2",

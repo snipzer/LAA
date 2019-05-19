@@ -14,10 +14,12 @@
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive -R spec"
   },
   "dependencies": {
+    "@google-cloud/connect-datastore": "^2.0.2",
     "@google-cloud/datastore": "^3.1.2",
     "apollo-boost": "^0.3.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "connect-redis": "^3.4.1",
     "cors": "^2.8.5",
     "dotenv": "4.0.0",
     "expect": "^24.1.0",
@@ -32,6 +34,7 @@
     "mocha": "5.0.0",
     "moment": "2.22.2",
     "path": "^0.12.7",
+    "redis": "^2.8.0",
     "twig": "^1.10.4",
     "winston": "2.4.0"
   },
