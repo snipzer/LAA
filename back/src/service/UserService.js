@@ -44,34 +44,26 @@ class UserService extends BaseService {
         });
     }
 
-    updateUser(session, user) {
+    updateUser(user) {
         return new Promise((resolve, reject) => {
-            if (session.user.id !== user.id) {
-                reject(new Error(MessageUtil.getErrors().UPDATE_OTHER_USER.fr));
-            } else {
-                user.password = undefined;
-                this.dao.update(user)
-                    .then(result => resolve(DatastoreUtil.getEntityInformation(result)))
-                    .catch(err => this.rejectAndLogError(reject, err.message));
-            }
+            user.password = undefined;
+            this.dao.update(user)
+                .then(result => resolve(DatastoreUtil.getEntityInformation(result)))
+                .catch(err => this.rejectAndLogError(reject, err.message));
         });
     }
 
-    updatePassword(session, userId, oldUserPassword, userPassword, userPasswordConfirm) {
+    updatePassword(userId, oldUserPassword, userPassword, userPasswordConfirm) {
         return new Promise((resolve, reject) => {
             if (userPasswordConfirm === userPassword) {
                 this.dao.getById(userId).then((result) => {
                     BcryptUtil.validPassword(result.entityData.password, oldUserPassword).then((res) => {
                         if (res === true) {
-                            if (session.user.id !== userId) {
-                                this.rejectAndLogError(reject, new Error(MessageUtil.getErrors().UPDATE_OTHER_USER.fr).message);
-                            } else {
-                                BcryptUtil.generatePassword(userPassword).then((hash) => {
-                                    this.dao.update({ id: userId, password: hash })
-                                        .then(updatedUser => resolve(DatastoreUtil.getEntityInformation(updatedUser)))
-                                        .catch(err => this.rejectAndLogError(reject, err.message));
-                                }).catch(err => this.rejectAndLogError(reject, err.message));
-                            }
+                            BcryptUtil.generatePassword(userPassword).then((hash) => {
+                                this.dao.update({ id: userId, password: hash })
+                                    .then(updatedUser => resolve(DatastoreUtil.getEntityInformation(updatedUser)))
+                                    .catch(err => this.rejectAndLogError(reject, err.message));
+                            }).catch(err => this.rejectAndLogError(reject, err.message));
                         } else {
                             reject(new Error(MessageUtil.getErrors().INVALID_CREDENTIAL.fr));
                         }
@@ -95,23 +87,19 @@ class UserService extends BaseService {
         });
     }
 
-    deleteUser(session, userId) {
+    deleteUser(userId) {
         return new Promise((resolve, reject) => {
-            if (session.user.id !== userId) {
-                reject(new Error(MessageUtil.getErrors().DELETE_OTHER_USER.fr));
-            } else {
-                this.getUser(userId).then((user) => {
-                    if (user !== null) {
-                        this.services.repository.deleteAllByOwner(userId).then(() => {
-                            this.dao.deleteById(userId)
-                                .then(result => resolve(result))
-                                .catch(err => this.rejectAndLogError(reject, err.message));
-                        }).catch(err => this.rejectAndLogError(reject, err.message));
-                    } else {
-                        reject(new Error(MessageUtil.getErrors().USER_NOT_FOUND.fr));
-                    }
-                }).catch(err => this.rejectAndLogError(reject, err.message));
-            }
+            this.getUser(userId).then((user) => {
+                if (user !== null) {
+                    this.services.repository.deleteAllByOwner(userId).then(() => {
+                        this.dao.deleteById(userId)
+                            .then(result => resolve(result))
+                            .catch(err => this.rejectAndLogError(reject, err.message));
+                    }).catch(err => this.rejectAndLogError(reject, err.message));
+                } else {
+                    reject(new Error(MessageUtil.getErrors().USER_NOT_FOUND.fr));
+                }
+            }).catch(err => this.rejectAndLogError(reject, err.message));
         });
     }
 

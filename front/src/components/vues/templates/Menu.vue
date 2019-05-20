@@ -38,11 +38,10 @@
         },
         created: function () {
             this.$bus.$on('authenticated', (value) => {
-                console.log(value);
                 this.isAuthenticated = value;
             });
             const token = Vue.localStorage.get("userToken");
-            Vue.services.user.checkUserToken(token).then(() => {
+            Vue.services.user.checkUserToken(token, Vue.localStorage.get("userId")).then(() => {
                 this.$bus.$emit('authenticated', true);
             }).catch(() => {
                 this.$bus.$emit('authenticated', false);

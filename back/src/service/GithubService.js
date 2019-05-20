@@ -28,33 +28,37 @@ class GithubService extends BaseService {
         });
     }
 
-    refreshRepository(session) {
+    refreshRepository(userId) {
         return new Promise((resolve, reject) => {
-            this.services.repository.deleteAllByOwner(session.user.id).then(() => {
-                this.dao.getOrganizationUsers(session.user.github_organization).then((response) => {
-                    let result = this._extractData(response);
-                    // Bidoulle parce que je ne peux pas stocker d'array de string dans gcloud
-                    result = result.map((element) => {
-                        element.total_users = element.users.length;
-                        element.users = element.users.join(' ');
-                        return element;
+            this.services.user.getUser(userId).then((userDataKey) => {
+                const user = userDataKey.data;
+                user.id = userDataKey.key.id;
+                this.services.repository.deleteAllByOwner(user.id).then(() => {
+                    this.dao.getOrganizationUsers(user.github_organization).then((response) => {
+                        let result = this._extractData(response);
+                        // Bidoulle parce que je ne peux pas stocker d'array de string dans gcloud
+                        result = result.map((element) => {
+                            element.total_users = element.users.length;
+                            element.users = element.users.join(' ');
+                            return element;
+                        });
+                        this._saveData(result, user.id, resolve, reject);
+                    }).catch(async (err) => {
+                        this.rejectAndLogError(reject, err.message);
+                        if (err.message === MessageUtil.getErrors().GITHUB_BAD_GATEWAY.en) {
+                            const result = await this.refreshRepository(user.id);
+                            if (result === 'ok') resolve('ok');
+                        }
                     });
-                    this._saveData(result, session, resolve, reject);
-                }).catch(async (err) => {
-                    this.rejectAndLogError(reject, err.message);
-                    if (err.message === MessageUtil.getErrors().GITHUB_BAD_GATEWAY.en) {
-                        const result = await this.refreshRepository(session);
-                        if (result === 'ok') resolve('ok');
-                    }
-                });
+                }).catch(err => this.rejectAndLogError(reject, err.message));
             }).catch(err => this.rejectAndLogError(reject, err.message));
         });
     }
 
-    _saveData(result, session, resolve, reject) {
+    _saveData(result, userId, resolve, reject) {
         const insertArray = [];
         result.forEach(async (element) => {
-            element.owner = session.user.id;
+            element.owner = userId;
             try {
                 insertArray.push(this.services.repository.dao.insert(element));
             } catch (err) {
