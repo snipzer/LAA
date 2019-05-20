@@ -94,6 +94,11 @@
             submit() {
                 if(this.checkData()) {
                     Vue.services.user.register(this.emailData.value, this.passwordData.value, this.githubLoginData.value, this.githubOrganizationData.value,this.githubTokenData.value).then(result => {
+                        Vue.localStorage.set("userLogin", "");
+                        Vue.localStorage.set("userOrganization", "");
+                        Vue.localStorage.set("userId", "");
+                        Vue.localStorage.set("userToken", "");
+                        this.$bus.$emit('authenticated', false);
                         this.$router.push("login");
                     }).catch(err => console.log(err));
                 }

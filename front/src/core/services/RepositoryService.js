@@ -6,8 +6,8 @@ export default class RepositoryService extends BaseService {
         this._complementUrl = '/api/repository';
     }
 
-    getRepository(token) {
-      return this._http.get(`${this._baseUrl}${this._complementUrl}`, {
+    getRepository(token, userId) {
+      return this._http.get(`${this._baseUrl}${this._complementUrl}/${userId}`, {
           headers: {
               Authorization: token
           }

@@ -10,7 +10,7 @@
         name: "Home",
         created: function () {
             const token = Vue.localStorage.get("userToken");
-            Vue.services.user.checkUserToken(token).then(() => {
+            Vue.services.user.checkUserToken(token, Vue.localStorage.get("userId")).then(() => {
                 this.$bus.$emit('authenticated', true);
                 this.$router.push("repository")
             }).catch(() => {

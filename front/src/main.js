@@ -1,9 +1,9 @@
 const env = {
     "ENV":"development",
-    // "BACK_URL_ORIGIN":"laa-epsi-back.appspot.com",
-    // "BACK_URL_HTTP":"https://",
-    "BACK_URL_ORIGIN":"localhost:3000",
-    "BACK_URL_HTTP":"http://"
+    "BACK_URL_ORIGIN":"laa-epsi-back.appspot.com",
+    "BACK_URL_HTTP":"https://",
+    // "BACK_URL_ORIGIN":"localhost:3000",
+    // "BACK_URL_HTTP":"http://"
 };
 
 import Vue from "vue";

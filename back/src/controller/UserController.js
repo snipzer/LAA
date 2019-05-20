@@ -6,7 +6,7 @@ class UserController extends BaseController {
     registerRoutes(routePreffix) {
         this.router.route('/logout').get(AccessGranted.public, this.logout.bind(this));
         this.router.route('/login').post(AccessGranted.public, this.login.bind(this));
-        this.router.route('/checkSession').get(AccessGranted.restricted, this.checkUserToken.bind(this));
+        this.router.route('/checkSession/:userId').get(AccessGranted.restricted, this.checkUserToken.bind(this));
         this.router.route(`${routePreffix}`).post(AccessGranted.public, this.createUser.bind(this));
         this.router.route(`${routePreffix}/:userId`).get(AccessGranted.restricted, this.getUser.bind(this));
         this.router.route(`${routePreffix}/update`).post(AccessGranted.restricted, this.updateUser.bind(this));
@@ -15,7 +15,7 @@ class UserController extends BaseController {
     }
 
     checkUserToken(req, res) {
-        if (this.checkSession(req.session)) {
+        if (req.params.userId !== '' || req.params.userId !== 'null') {
             this.statusHandler.sendJson(res, this.statusHandler.ok, true);
         } else {
             this.statusHandler.sendJson(res, this.statusHandler.ok, false);
@@ -37,19 +37,13 @@ class UserController extends BaseController {
     }
 
     updateUser(req, res) {
-        if (this.checkSession(req.session)) {
-            this.service.updateUser(req.session, req.body).then((result) => {
-                this.saveSession(req, result)
-                    .then(() => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
-                    .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
-            }).catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
-        } else {
-            this.statusHandler.sendJson(res, this.statusHandler.forbidden, MessageUtil.getErrors().NOT_CONNECTED.fr);
-        }
+        this.service.updateUser(req.body)
+            .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     updatePassword(req, res) {
-        this.service.updatePassword(req.session, req.body.id, req.body.oldPassword, req.body.password, req.body.passwordConfirm).then((result) => {
+        this.service.updatePassword(req.body.id, req.body.oldPassword, req.body.password, req.body.passwordConfirm).then((result) => {
             this.saveSession(req, result)
                 .then(() => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
                 .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
@@ -63,23 +57,15 @@ class UserController extends BaseController {
     }
 
     deleteUser(req, res) {
-        if (this.checkSession(req.session)) {
-            this.service.deleteUser(req.session, req.params.userId)
-                .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
-                .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
-        } else {
-            this.statusHandler.sendJson(res, this.statusHandler.forbidden, MessageUtil.getErrors().NOT_CONNECTED.fr);
-        }
+        this.service.deleteUser(req.params.userId)
+            .then(result => this.statusHandler.sendJson(res, this.statusHandler.ok, result))
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 
     getUser(req, res) {
-        if (this.checkSession(req.session)) {
-            this.service.getUser(req.params.userId)
-                .then(user => this.statusHandler.sendJson(res, this.statusHandler.ok, user))
-                .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
-        } else {
-            this.statusHandler.sendJson(res, this.statusHandler.forbidden, MessageUtil.getErrors().NOT_CONNECTED.fr);
-        }
+        this.service.getUser(req.params.userId)
+            .then(user => this.statusHandler.sendJson(res, this.statusHandler.ok, user))
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 }
 

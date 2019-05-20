@@ -6,7 +6,7 @@ class GithubController extends BaseController {
     registerRoutes(routePreffix) {
         this.router.route(`${routePreffix}`).get(AccessGranted.public, this.getUserInformation.bind(this));
         this.router.route(`${routePreffix}/rate`).get(AccessGranted.public, this.getRateLimit.bind(this));
-        this.router.route(`${routePreffix}/refresh/repositories`).get(AccessGranted.restricted, this.refreshRepository.bind(this));
+        this.router.route(`${routePreffix}/refresh/repositories/:userId`).get(AccessGranted.restricted, this.refreshRepository.bind(this));
     }
 
     getUserInformation(req, res) {
@@ -22,15 +22,9 @@ class GithubController extends BaseController {
     }
 
     refreshRepository(req, res) {
-        console.log("into methods");
-        if (this.checkSession(req.session) && req.session.user.github_organization !== undefined) {
-            console.log("there is a session")
-            this.service.refreshRepository(req.session)
-                .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
-                .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
-        } else {
-            this.statusHandler.sendJson(res, this.statusHandler.forbidden, MessageUtil.getErrors().NOT_CONNECTED.fr);
-        }
+        this.service.refreshRepository(req.params.userId)
+            .then(response => this.statusHandler.sendJson(res, this.statusHandler.ok, response))
+            .catch(err => this.statusHandler.sendJson(res, this.statusHandler.internalServerError, err));
     }
 }
 

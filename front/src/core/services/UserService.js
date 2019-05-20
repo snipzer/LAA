@@ -66,12 +66,19 @@ export default class UserService extends BaseService {
         });
     }
 
-    checkUserToken(token) {
-        console.log(this._baseUrl)
-        return this._http.get(`${this._baseUrl}/checkSession`, {
+    checkUserToken(token, userId) {
+        return this._http.get(`${this._baseUrl}/checkSession/${userId}`, {
             headers: {
                 Authorization: token
             }
         })
+    }
+
+    deleteUser(token, userId) {
+        return this._http.delete(`${this._baseUrl}${this._complementUrl}/`+userId, {
+            headers: {
+                Authorization: token
+            }
+        });
     }
 }

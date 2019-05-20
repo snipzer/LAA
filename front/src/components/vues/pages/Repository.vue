@@ -46,7 +46,7 @@
                 try {
                     this.loading = true;
                     this.repositories = null;
-                    await Vue.services.github.refreshRepositories(Vue.localStorage.get("userToken"));
+                    await Vue.services.github.refreshRepositories(Vue.localStorage.get("userToken"), Vue.localStorage.get("userId"));
                     await this.getRepositories();
                 } catch(err) {
                     if(err.status === 403) {
@@ -59,7 +59,7 @@
             getRepositories: async function () {
                 try {
                     this.loading = true;
-                    let response = await Vue.services.repository.getRepository(Vue.localStorage.get("userToken"));
+                    let response = await Vue.services.repository.getRepository(Vue.localStorage.get("userToken"), Vue.localStorage.get("userId"));
                     if(response.body.length === 0) {
                         await this.refreshRepositories();
                     }

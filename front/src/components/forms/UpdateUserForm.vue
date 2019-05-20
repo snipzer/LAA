@@ -167,6 +167,11 @@
                     }).catch((err) => {
                         if(err.status === 403) {
                             alert(err.body);
+                            Vue.localStorage.set("userLogin", "");
+                            Vue.localStorage.set("userOrganization", "");
+                            Vue.localStorage.set("userId", "");
+                            Vue.localStorage.set("userToken", "");
+                            this.$bus.$emit('authenticated', false);
                             this.$router.push("login");
                         }
                     });
@@ -176,6 +181,11 @@
                 if(confirm("Vous êtes sur de vouloir effectuer cette action ? Toutes les données seront supprimer")) {
                     Vue.services.user.deleteUser(Vue.localStorage.get("userToken"), this.user.id).then(() => {
                         alert("Suppression bien effectuer");
+                        Vue.localStorage.set("userLogin", "");
+                        Vue.localStorage.set("userOrganization", "");
+                        Vue.localStorage.set("userId", "");
+                        Vue.localStorage.set("userToken", "");
+                        this.$bus.$emit('authenticated', false);
                         this.$router.push("login");
                     }).catch((err) => {
                         if(err.status === 403) {
